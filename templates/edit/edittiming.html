@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}编辑定时任务{% endblock %}
+{% block content %}
+    <div class="span9" id="content">
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">编辑定时任务</div>
+            </div>
+            <h5 style="color: red" >{{ msg }}</h5>
+            <div class="block-content collapse in">
+                <p class="span12">
+                <div class="table-toolbar">
+                <div class="btn-group">
+                </div>
+            </div>
+                <form   class="form-signin" method="post" action="">
+                    {% csrf_token %}
+                    <p>
+                        <span> <strong>项目：</strong></span>
+                        <select name="project" id="project" onclick="testall()" >
+                            {% for project in projects %}
+                                {% if task.project == project %}
+                                    <option  selected>{{ project.name }}</option>
+                                {% else %}
+                                    <option  >{{ project.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <p>
+                        <span><strong>任务的名字：</strong></span>
+                        <input  name="name" placeholder="定时任务的名字" value="{{ task.name }}">
+                    </p>
+                    <p><span><strong>目前选择环境:</strong> {{ task.tesevent.name }}</span>
+                        <br>
+                        <span><strong>测试环境：</strong></span>
+                        <select id="testevent" name="testevent" onclick="testcase()"></select>
+                    </p>
+                    <p>
+                        <span><strong>目前选择的用例:</strong></span>
+                        {% for case in task.case.all %}
+                            <strong>{{ case.casenum }}</strong>
+                        {% endfor %}
+                        <br>
+                        <span><strong>用例编号：</strong></span>
+                        <span id="testcase"></span>
+                    </p>
+                    <p>
+                        <strong>执行时间表达式</strong>
+                        <input name="cron" placeholder="定时任务的cron表达式" value="{{ task.taskstart }}">
+                    </p>
+                    <input type="submit" class="button btn-default" value="编辑">
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}
+{% block js %}
+    window.onload=testevet();
+    function testall(){
+    testevet();
+    testcase();
+    }
+    function testevet() {
+    var obj = document.getElementById('project');
+    var index=obj.selectedIndex;
+    var meth = obj.options[index].value;
+    var testvents= $("#testevent");
+    $.ajax({
+    url: '{%  url 'gettestcase' %}',
+    type: 'POST',
+    data:  meth,
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if (result['code'] == 200) {
+        testvents.empty();
+        for (var i = 0; i < result['data'].length; i++) {
+            var obj = result['data'][i];
+            testvents.append("<option>" + obj.testevent + "</option>");
+        }
+        ;
+    }
+    else {
+    alert(result['msg']);
+    }
+    }
+    });
+    };
+function testcase() {
+    var obj = document.getElementById('project');
+    var index=obj.selectedIndex;
+    var meth = obj.options[index].value;
+    var ob = document.getElementById('testevent');
+    var inde=ob.selectedIndex;
+    var met = ob.options[inde].value;
+    var testcase= $("#testcase");
+    var data={};
+    data['project']=meth;
+    data['testvent']=met;
+    $.ajax({
+    url: '{%  url 'get_test_case' %}',
+    type: 'POST',
+    data:   JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if (result['code'] == 200) {
+        testcase.empty();
+        for (var i = 0; i < result['data'].length; i++) {
+            var obj = result['data'][i];
+           testcase.append("<input type='checkbox'  value=" + obj.case + " name='case'>"+obj.case);
+
+        }
+        ;
+    }
+    else {
+    alert(result['msg']);
+    }
+    }
+    });
+    };
+{% endblock %}

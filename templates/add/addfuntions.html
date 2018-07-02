@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% block title %}添加功能逻辑{% endblock %}
+{% block content %}
+    <div class="span9" id="content" style="    width: 87%;">
+    <div class="block">
+    <div class="navbar navbar-inner block-header">
+        <div class="muted pull-left">添加逻辑</div>
+    </div>
+    <h4 style="color:red;">{{ msg }}</h4>
+    <div class="block-content collapse in">
+        <div class="span12">
+            <div class="table-toolbar">
+                <div class="btn-group">
+                </div>
+            </div>
+            <form method='post'  id="case_add" action="{% url 'addfunction' %}">
+                {% csrf_token %}
+                <div class="ak-jsch-modal-row col01">
+                    <div class="ak-jsch-pos">
+                        <div class="ak-jsch-point">
+                        </div>
+                    </div>
+                    <div class="ak-jsch-modal-text col01 clearfix">
+                        <span class=" ">功能名称</span>
+                        <div class="">
+                            <input  name="name"  type="text" placeholder="功能名称">
+                        </div>
+                    </div>
+                </div>
+                <div class="ak-jsch-modal-row col01">
+                    <div class="ak-jsch-pos">
+                        <div class="ak-jsch-point">
+                        </div>
+                    </div>
+                    <div class="ak-jsch-modal-text col01 clearfix">
+                        <span class=" ">逻辑描述</span>
+                        <div class="">
+                            <input  name="desc"  type="text" placeholder="逻辑描述">
+                        </div>
+                    </div>
+                </div>
+                <div class="ak-jsch-modal-row col01 ak-jsch-padding">
+                    <div class="ak-jsch-modal-text">
+                        <div class="ak-jsch-modal-item ak-jsch-pt clearfix">
+                            <span class="ak-jsch-item-left ak-left">项目</span>
+                            <div class="ak-jsch-item-right ak-left">
+                                <select id="selprojectid" name="projectid" class="ak-left ac-aselect col01" required="">
+                                    {% for project in projects%}
+                                        <option>{{project.name}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ak-jsch-modal-item ak-jsch-pt clearfix">
+                            <span class="ak-jsch-item-left ak-left">模块</span>
+                            <div class="ak-jsch-item-right ak-left">
+                                <select name="selmoduleid" id="selmoduleid"  >
+                                    <option value="所属模块">所属模块</option>
+                                    {% for model in models_list%}
+                                        <option>{{model.name}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                        </div>
+                        <table class="table table-conde" id="tab" style="width:100%">
+                            <thead>
+                            <th>顺序</th>
+                            <th>描述</th>
+                            <th>操作</th>
+                            <th>定位</th>
+                            <th>定位api</th>
+                             <th>定位索引</th>
+                            <th>执行操作</th>
+                            <th>参数</th>
+                            <th>是否断言</th>
+                            <th>操作</th>
+                            <input hidden="true" id="linecounter"   value = 1 type='hidden' >
+                            </thead>
+                            <tbody>
+                            <tr id="row1">
+                                <td>1</td>
+                                <td>
+                                    <input name="descr"  placeholder="请输入步骤描述" type="input" ></td>
+                                <td>
+                                    <select id="keyword_1" name="keyword" class="ak-left ac-aselect col01" required="" style="    width: 110px;">
+                                        <option>id</option>
+                                        <option>name</option>
+                                        <option>class_name</option>
+                                        <option>xpath</option>
+                                        <option>tag_name</option>
+                                        <option>link_text</option>
+                                        <option>portial_link_text</option>
+                                        <option>css_selector</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input id="autocomplete_1" name="autocomplete" class="ui-autocomplete-input ac-element-input" type="input">
+                                </td>
+                                <td>
+                                    <select name="type"  style="    width: 110px;">
+                                        <option>element</option>
+                                        <option>elements</option>
+                                    </select>
+                                </td>
+                                  <td>
+                                    <input name="index" placeholder="如果选择elements必须添加索引">
+                                </td>
+                                <td>
+                                    <select name="caozuo" style=" width: 110px;">
+                                        <option>click</option>
+                                        <option>sendkeys</option>
+                                        <option>text</option>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <input type="text" name="canshu" placeholder="如果需要参数，则填写参数">
+                                </td>
+                                <td >
+                                    <select name="duanyan" style="    width: 110px;">
+                                        <option>否</option>
+                                        <option>是</option>
+                                    </select>
+                                </td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                            <tfoot class="text-left">
+                            </tfoot>
+                        </table>
+                        <button type="button" onclick="case_step_addtr();" class="text-left ac-btn-addcase orange ac-margin-tb15 btn-default">添加一行</button>
+                        <div style="text-align: center;">
+                            <input  class="btn btn-sm btn-primary" type="submit" value="提交">
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{%block js%}
+    function case_step_addtr() {
+    rowid = $('#rowid').val();
+    var len = parseInt($("#linecounter").val())+1;
+
+    $("#tab tbody").append('<tr id=row'+len+' name="rowstep">'
+    +'<td>'+len+'</td>'
+    +'<td><input name="descr" class="ac-acaseedit-input" placeholder="请输入步骤描述" type="input"></td>'
+    +'<td><select id="keyword_'+len+'" name="keyword" class="ak-left ac-aselect col01" style="  width: 110px;"><option>id</option><option>name</option><option>class_name</option><option>xpath</option><option>tag_name</option><option>link_text</option><option>portial_link_text</option> <option>css_selector</option></select></td>'
+    +'<td><input id="autocomplete_'+len+'" name="autocomplete" class="ui-autocomplete-input ac-element-input" type="input"><input type="hidden" id="elementid_'+len+'" name="elementid" value="None"></td>'
+    +'<td><select name="type" style="width: 110px;"><option>element</option><option>elements</option></select></td> <td><input name="index" placeholder="如果选择elements必须添加索引"></td>'
+    +'<td> <select name="caozuo" style="width: 110px;"><option>click</option> <option>sendkeys</option><option>text</option></select></td><td><input type="text" name="canshu" placeholder="如果需要参数，则填写参数"></td><td><select name="duanyan" style="    width: 110px;"><option>否</option><option>是</option></select></td>'
+    +'<td><a  title="删除" class="ke-ablock" onclick="deltr('+len+')"><i class="">删除</i></a>' +
+        '</td></tr>');
+    $("#linecounter").val(len);
+    if(rowid != ''){
+    $('#row'+len).insertAfter('#row'+rowid);
+    }
+    $('#rowid').val('');
+
+    $( "#autocomplete_" +len ).autocomplete({
+    minLength: 0,
+    source: elementTags,
+    focus: function( event, ui ) {
+    return false;
+    },
+    select: function( event, ui ) {
+    $( "#autocomplete_"+len ).val( ui.item.value );
+    $( "#elementid_"+len ).val( ui.item.key );
+    return false;
+    },
+    })
+    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+    return $( "<li>" )
+    .append('<div class="ui-menu-item-wrapper" title="'+item.location.replace(/"/g,"'")+'">' + item.value + '</div>')
+    .appendTo( ul );
+    };
+    }
+    //行删除
+    function deltr(index) {
+    $("tr[id='row"+index+"']").remove();//删除当前行
+    }
+{%endblock%}

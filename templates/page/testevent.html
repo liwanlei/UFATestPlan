@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% block title %}测试环境{% endblock %}
+{% block content %}
+    <div class="span9" id="content">
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">测试环境</div>
+            </div>
+            <h4>{{ msg }}</h4>
+            {% if messages %}
+                <div class="messages" style="margin-left: 30px">
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <div class="table-toolbar">
+                        <div class="btn-group">
+                            <button onclick="addtestevent()" class="btn btn-success" >添加
+                            </button>
+                        </div>
+                    </div>
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row">
+                            <div class="span6">
+                            </div>
+                        </div>
+                        <table cellpadding="0" cellspacing="0" border="0" class="table table-hover table-bordered dataTable" id="example2" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">测试环境名字</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">测试环境地址</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">所属项目</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 233px;">创建者</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 214px;">操作</th>
+                            </thead>
+                            <tbody role="alert" aria-live="polite" aria-relevant="all">
+                            {% for event in events %}
+                                <tr class="gradeA odd" id="{{ event.id }}">
+                                    <td class=" sorting_1">{{ event.name }}</td>
+                                    <td class=" sorting_1">{{ event.url_test }}</td>
+                                    <td class=" sorting_1">{{ event.projetc }}</td>
+                                    <td class=" ">{{ event.user }}</td>
+                                    <td class=" ">
+                                        <button class="btn btn-primary " onclick="editest({{ event.id }})">
+                                            <i class="icon-pencil icon-white"></i>编辑
+                                        </button>
+                                        <button class="btn btn-danger " onclick="deletetestevent({{ event.id }})">
+                                            <i class="icon-remove icon-white">
+                                            </i> 删除</button>
+                                    </td>
+                                </tr>
+                                <div style="display:none;z-index: 210;width: 500px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: lightgray"  id="tevent-{{ event.id }}">
+                                    <div style="height: 5px;">编辑测试环境</div>
+                                    <div style="background-color: whitesmoke;margin-top: 24px" >
+                                        <p>
+                                            <span>测试环境名字：</span>
+                                            <input id="name-{{ event.id }}" placeholder="请输入要添加的测试环境名称" value="{{ event.name }}">
+                                        </p>
+                                        <p>
+                                            <span>测试环境url：</span>
+                                            <input id="url-{{ event.id }}" placeholder="请输入要添加的测试环境url" value="{{ event.url_test }}">
+                                        </p>
+                                        <p>
+                                            <span>测试环境port：</span>
+                                            <input id="port-{{ event.id }}" placeholder="请输入要添加的测试环境url" value="{{ event.port_test }}">
+                                        </p>
+                                        <p>
+                                            <span>所属项目：</span>
+                                            <select id="pro-{{ event.id }}">
+                                                {% for project in projects %}
+                                                    {%  if project.name == event.projetc.name %}
+                                                        <option selected>{{ project.name }}</option>
+                                                    {% else %}
+                                                        <option>{{ project.name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </p>
+                                    </div>
+                                    <div style="margin-bottom: auto">
+                                        <input value="编辑" type="button" class="btn-default"  onclick="editestevent({{ event.id }})" >
+                                        <input value="取消" type="button" class=" btn-default"  onclick="guanbite({{ event.id }})" >
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;z-index: 210;width: 500px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: lightgray"  id="addtestevent">
+        <div style="height: 5px;">添加测试环境</div>
+        <div style="background-color: whitesmoke;margin-top: 24px" >
+            <p>
+                <span>测试环境名字：</span>
+                <input id="name" placeholder="请输入要添加的测试环境名称">
+            </p>
+            <p>
+                <span>测试环境url：</span>
+                <input id="url" placeholder="请输入要添加的测试环境url">
+            </p>
+            <p>
+                <span>测试环境port：</span>
+                <input id="port" placeholder="请输入要添加的测试环境port">
+            </p>
+            <p>
+                <span>所属项目：</span>
+                <select id="project">
+                    {% for project in projects %}
+                        <option>{{ project.name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+        <div style="margin-bottom: auto">
+            <input value="添加" type="button" class="btn-default"  onclick="tianjiatestevent()" >
+            <input value="取消" type="button" class=" btn-default"  onclick="guanbitestevent()" >
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    function deletetestevent(id) {
+    $.ajax({
+    url:'{% url 'testevent' %}',
+    type:'DELETE',
+    data:id,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if(data['code']!=2){
+    alert(data['data'])
+    }else{
+    alert(data['data'])
+    caseid=document.getElementById(id);
+    caseid.hidden=true;
+    }
+    }
+    })
+    };
+    function addtestevent(){
+    m=document.getElementById('addtestevent');
+    m.style.display=''
+    };
+    function guanbitestevent(){
+    m=document.getElementById('addtestevent');
+    m.style.display='none'
+    };
+    function tianjiatestevent(){
+    var name=document.getElementById('name').value;
+    var url=document.getElementById('url').value;
+    var obj = document.getElementById('project');
+    var index=obj.selectedIndex;
+    var project = obj.options[index].value;
+    var port=document.getElementById('port').value;
+    var data={};
+    data['name']=name
+    data['url']=url
+    data['project']=project
+    data['port']=port
+    $.ajax({
+    url: '{%  url 'testevent' %}',
+    type: 'POST',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if(result['code']==2){
+    alert(result['data']);
+    location.reload()
+    }
+    else{
+    alert(result['data']);
+    }
+    }
+    }
+    )
+    };
+    function editest(id){
+    m=document.getElementById('tevent-'+id);
+    m.style.display=''
+    };
+    function guanbite(id){
+    m=document.getElementById('tevent-'+id);
+    m.style.display='none'
+    };
+    function editestevent(id){
+    var name=document.getElementById('name-'+id).value;
+    var url=document.getElementById('url-'+id).value;
+    var obj = document.getElementById('pro-'+id);
+    var index=obj.selectedIndex;
+    var project = obj.options[index].value;
+    var port=document.getElementById('port-'+id).value;
+    var data={};
+    data['name']=name
+    data['url']=url
+    data['project']=project
+    data['port']=port
+    data['id']=id
+    $.ajax({
+    url: '{%  url 'testevent' %}',
+    type: 'PUT',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if(result['code']==2){
+    alert(result['data']);
+    location.reload()
+    }
+    else{
+    alert(result['data']);
+    }
+    }
+    }
+    )
+    }
+{% endblock %}

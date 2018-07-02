@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>app自动化系统</title>
+     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" >
+    <link href="../../static/css/styles.css" rel="stylesheet" type="text/css" >
+     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="/static/js/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript" rel="script"></script>
+  </head>
+  <body id="login">
+    <div class="container" >
+
+      <form class="form-signin" method="POST" action="{% url 'login' %}">
+          {% csrf_token %}
+        <h2 class="form-signin-heading">登录</h2>
+          {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+          <p style="color: red">{{ msg }}</p>
+          <input type="text" name="username" class="input-block-level" placeholder="用户名">
+        <input type="password" name="password" class="input-block-level" placeholder="密码">
+        <button class="btn btn-large btn-primary" type="submit">登录</button>
+      </form>
+    </div> <!-- /container -->
+       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>

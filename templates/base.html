@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
+    <link href="/static/css/styles.css" rel="stylesheet" media="screen">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <script src="/static/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">APP基于appium自动化测试平台</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i> {{request.session.username }} <i class="caret"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="{% url 'changepassword' %}">修改密码</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="{% url 'logout' %}">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+{#                <ul class="nav">#}
+{#                    <li class="">#}
+{#                        <a href="#">首页</a>#}
+{#                    </li>#}
+{#                    <li class="dropdown">#}
+{#                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">项目系统<b class="caret"></b>#}
+{#                        </a>#}
+{#                        <ul class="dropdown-menu" id="menu1">#}
+{#                            <li>#}
+{#                                <a href="#">项目管理#}
+{#                                </a>#}
+{#                            </li>#}
+{#                                    <li>#}
+                {#                                        <a href="#">模块管理</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a href="#">测试环境管理</a>#}
+                {#                                    </li>#}
+                {#                                </ul>#}
+                {#                            </li>#}
+                {#                            <li class="dropdown">#}
+                {#                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">自动化用例 <i class="caret"></i>#}
+                {#                                </a>#}
+                {#                                <ul class="dropdown-menu">#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">用例逻辑</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">用例</a>#}
+                {#                                    </li>#}
+                {#                                </ul>#}
+                {#                            </li>#}
+                {#                            <li class="dropdown">#}
+                {#                                <a href="#" role="button" >定时任务#}
+                {#                                </a>#}
+                {#                            </li>#}
+                {#                    <li class="dropdown">#}
+                {#                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">测试网盘 <i class="caret"></i>#}
+                {#                                </a>#}
+                {#                                <ul class="dropdown-menu">#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">测试用例</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">checklist</a>#}
+                {#                                    </li>#}
+                {#                                     <li>#}
+                {#                                        <a tabindex="-1" href="#">测试报告</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">分享文档</a>#}
+                {#                                    </li>#}
+                {#                                </ul>#}
+                {#                            </li>#}
+                {#                      <li class="dropdown">#}
+                {#                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">硬件管理 <i class="caret"></i>#}
+                {#                                </a>#}
+                {#                                <ul class="dropdown-menu">#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">测试设备</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">测试书籍</a>#}
+                {#                                    </li>#}
+                {#                                </ul>#}
+                {#                            </li>#}
+                {#                     <li class="dropdown">#}
+                {#                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">测试报告 <i class="caret"></i>#}
+                {#                                </a>#}
+                {#                                <ul class="dropdown-menu">#}
+                {#                                     <li>#}
+                {#                                        <a tabindex="-1" href="#">版本测试报告</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">ui自动化测试报告</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">接口自动化测试报告</a>#}
+                {#                                    </li>#}
+                {#                                    <li>#}
+                {#                                        <a tabindex="-1" href="#">ui自动化性能</a>#}
+                {#                                    </li>#}
+                {#                                     <li>#}
+                {#                                        <a tabindex="-1" href="#">接口性能</a>#}
+                {#                                    </li>#}
+                {#                                </ul>#}
+                {#                            </li>#}
+                {#                    <li class="dropdown">#}
+                {#                                <a href="#" role="button" >用户管理#}
+                {#                                </a>#}
+                {#                            </li>#}
+                {#                        </ul>#}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3" id="sidebar" style="    width: 237px;">
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li >
+                    <a href="{% url 'home' %}">
+                        <i class="icon-chevron-right"></i>首页
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'project' %}">
+                        <i class="icon-chevron-right"></i> 项目
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'model' %}">
+                        <i class="icon-chevron-right"></i>模块
+                    </a>
+                <li>
+                <a href="{% url 'testevent' %}">
+                    <i class="icon-chevron-right"></i>测试环境
+                </a>
+            </li>
+                <li>
+                    <a href="{% url 'testfaution' %}">
+                        <i class="icon-chevron-right"></i>功能点逻辑</a>
+                </li>
+                <li>
+                    <a href="{% url 'testcase' %}">
+                        <i class="icon-chevron-right"></i>测试用例</a>
+                </li>
+                <li>
+                    <a href="{% url 'tingtask' %}">
+                        <i class="icon-chevron-right"></i></span> 定时任务</a>
+                </li>
+                <li>
+                    <a href="{% url 'testreport' %}">
+                        <i class="icon-chevron-right"></i></span>测试报告</a>
+                </li>
+                <li>
+                    <a href="{% url 'xingneng' %}">
+                        <i class="icon-chevron-right"></i></span>app测试性能</a>
+                </li>
+                {% if request.user.work.zhiwei == '测试主管' or request.user.is_superuser %}
+                    <li>
+                        <a href="{% url 'useradmin' %}">
+                            <i class="icon-chevron-right"></i></span>用户</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <hr>
+    <footer>
+        <p style="text-align: center"> 由雷子开发设计的APP基于appium的自动化测试平台</p>
+    </footer>
+</div>
+<!--/.fluid-container-->
+<script src="/static/js/jquery-1.9.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.easy-pie-chart.js"></script>
+<script src="/static/js/scripts.js"></script>
+{% block js_add %}{% endblock %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.bs-docs-sidenav li a').each(function(){
+            if($($(this))[0].pathname==String(window.location['pathname']))
+                $(this).parent().addClass('active');
+            {#else {#}
+            {##}
+            {#   $('.bs-docs-sidenav li a')[0].parentNode.setAttribute("class", "active")#}
+
+        });
+    })
+    {% block js %}
+    {% endblock %}
+</script>
+</body>
+</html>

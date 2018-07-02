@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% block title %}用户{% endblock %}
+{% block content %}
+    <div class="span9" id="content">
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">用户</div>
+            </div>
+            <h4>{{ msg }}</h4>
+            {% if messages %}
+                <div class="messages"  style="margin-left: 30px" >
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <div class="table-toolbar">
+                        <div class="btn-group">
+                            <button class="btn btn-success" onclick="adduser()">
+                               添加
+                            </button>
+                        </div>
+                    </div>
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row">
+                            <div class="span6">
+
+                            </div>
+                        </div>
+                        <table cellpadding="0" cellspacing="0" border="0" class="table table-hover table table-striped table-bordered dataTable" id="example2" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">用户名</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">邮箱</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">职位</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 100px;">所属项目</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">平台token</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 214px;">操作</th>
+                            </thead>
+                            <tbody role="alert" aria-live="polite" aria-relevant="all">
+                            {% for user in users %}
+                                <tr class="gradeA odd" id="{{ user.id }}">
+                                    <td class="sorting_1">{{ user.username }}</td>
+                                    <td class=" sorting_1">{{ user.email }}</td>
+                                    <td class=" sorting_1">{{ user.work}}</td>
+                                    <td>
+                                        {% for i in user.project_user_set.all %}
+                                        {% for m in  i.productname.all  %}
+                                            {% if i.is_guanliyuan  %}
+                                            <span style="color: red">{{ m.name }}</span>
+                                            {% else %}
+                                            <span>{{ m.name }}</span>
+                                            {% endif %}
+                                            {% endfor %}
+                                    {% endfor %}</td>
+                                    <td>{{ user.token }}</td>
+                                    <td class=" ">
+                                           <button class="btn btn-primary " onclick="edituser({{ user.id }})">
+                                               <i class="icon-pencil icon-white"></i>编辑</button>
+                                           <button class="btn btn-danger " onclick="deleteuser({{ user.id }})">
+                                               <i class="icon-remove icon-white"></i> 删除</button>
+                                        <a href="{% url 'resetuser' id=user.id %}">
+                                            <button class="btn btn-inverse"><i class="icon-refresh icon-white"></i> 重置密码</button></a>
+                                    </td>
+                                </tr>
+                                <div style="display:none;z-index: 210;width: 500px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: lightgray"  id="edituser-{{ user.id }}">
+        <div style="height: 5px;">编辑用户</div>
+        <div style="background-color: whitesmoke;margin-top: 24px" >
+            <p>
+                <span>用户名称：</span>
+                <input id="username-{{ user.id }}" placeholder="请输入要加入的用户名称" value="{{ user.username }}" ></p>
+            <p>
+                <span>用户邮箱：</span>
+                <input type="text" id="email-{{ user.id }}" value="{{ user.email }}">
+            </p>
+            所属项目：
+            <select multiple class="form-control" id="project-{{ user.id }}" >
+                {% for proje in project_list %}
+                    <option name="project" >{{ proje.name }}</option>
+                {% endfor %}
+            </select>
+            <p>项目管理员：<input type="radio" name="admin-{{ user.id }}">是</p>
+            <p><span>职      位：</span>
+                <select id="work-{{ user.id }}">
+                    {% for work in works %}
+                        {% if work.zhiwei == user.work.zhiwei %}
+                        <option selected>{{ work.zhiwei }}</option>
+                        {% else %}
+                        <option >{{ work.zhiwei }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+        <div style="margin-bottom: auto">
+            <input value="编辑" type="button" class="btn-default"  onclick="edit_user({{ user.id }})" >
+            <input value="取消" type="button" class=" btn-default"  onclick="quanxiaoedituser({{ user.id }})" >
+        </div>
+    </div>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;z-index: 210;width: 500px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: lightgray"  id="adduser">
+        <div style="height: 5px;">添加用户</div>
+        <div style="background-color: whitesmoke;margin-top: 24px" >
+            <p>
+                <span>用户名称：</span>
+                <input id="username" placeholder="请输入要加入的用户名称" ></p>
+            <p>
+                <span>用户密码：</span>
+                <input type="password" id="password" >
+            </p>
+            <p>
+                <span>确认密码：</span>
+                <input type="password" id="queren">
+            </p>
+            <p>
+                <span>用户邮箱：</span>
+                <input type="text" id="email">
+            </p>
+            所属项目：
+            <select multiple class="form-control" id="project" >
+                {% for proje in project_list %}
+                    <option name="project">{{ proje.name }}</option>
+                {% endfor %}
+            </select>
+            <p>项目管理员：<input type="radio" name="admin">是</p>
+            <p><span>职      位：</span>
+                <select id="work">
+                    {% for work in works %}
+                        <option>{{ work.zhiwei }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+        <div style="margin-bottom: auto">
+            <input value="添加" type="button" class="btn-default"  onclick="add_user()" >
+            <input value="取消" type="button" class=" btn-default"  onclick="quanxiaouser()" >
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    function deleteuser(id) {
+    $.ajax({
+    url:'{% url 'useradmin' %}',
+    type:'DELETE',
+    data:id,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if(data['code']!=2){
+    alert(data['data'])
+    }else{
+    alert(data['data'])
+    caseid=document.getElementById(id);
+    caseid.hidden=true;
+    }
+    }
+    })
+    };
+    function adduser(){
+     m=document.getElementById('adduser');
+    m.style.display=''
+    };
+    function quanxiaouser(){
+     m=document.getElementById('adduser');
+    m.style.display='none'
+    };
+    function add_user(){
+    var username=document.getElementById('username').value;
+    var password=document.getElementById('password').value;
+    var quren=document.getElementById('queren').value;
+    var email=document.getElementById('email').value;
+    var admin=$("input[name='admin']:checked").val();
+    var obj = document.getElementById('work');
+    var index=obj.selectedIndex;
+    var work = obj.options[index].value;
+    var proobj = document.getElementById("project");
+    var selectedValues = [];
+     for (var i = 0; i < proobj.length; i++) {
+         if (proobj.options[i].selected == true){
+             selectedValues.push(proobj[i].text);}
+     }
+    if(password!=quren){
+     alert('请确定两次输入密码是否一致')
+    }else{
+    if(username.length<=0){
+     alert('用户名不能为空')
+    }else{
+    if(email.length<=0){
+    alert('邮箱不能为空')
+    }else{
+     var data={};
+    data['username']=username;
+    data['password']=password;
+    data['email']=email;
+    data['admin']=admin;
+    data['work']=work;
+    data['project']=selectedValues;
+    $.ajax({
+    url: '{%  url 'useradmin' %}',
+    type: 'POST',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if(result['code']==2){
+    alert(result['data']);
+    location.reload()
+    }
+    else{
+    alert(result['data']);
+    }
+    }
+    })
+    }
+    }
+    }
+    };
+    function edituser(id){
+    m=document.getElementById('edituser-'+id);
+    m.style.display=''
+    };
+    function quanxiaoedituser(id){
+     m=document.getElementById('edituser-'+id);
+    m.style.display='none'
+    };
+    function edit_user(id){
+    var username=document.getElementById('username-'+id).value;
+    var email=document.getElementById('email-'+id).value;
+    var admin=$("input:radio:checked").val();
+    var obj = document.getElementById('work');
+    var index=obj.selectedIndex;
+    var work = obj.options[index].value;
+    var proobj = document.getElementById("project-"+id);
+    var selectedValues = [];
+     for (var i = 0; i < proobj.length; i++) {
+         if (proobj.options[i].selected == true){
+             selectedValues.push(proobj[i].text);}
+     }
+    var data={};
+    data['username']=username;
+    data['email']=email;
+    data['admin']=admin;
+    data['work']=work;
+    data['project']=selectedValues;
+    $.ajax({
+    url: '{%  url 'useradmin' %}',
+    type: 'PUT',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if(result['code']==2){
+    alert(result['data']);
+    location.reload()
+    }
+    else{
+    alert(result['data']);
+    }
+    }
+    }
+    )
+    }
+{% endblock %}

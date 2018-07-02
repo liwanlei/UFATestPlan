@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}首页{% endblock %}
+{% block content %}
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="span9" id="content">
+        <div class="row-fluid">
+            <div class="block">
+                <div class="navbar navbar-inner block-header">
+                    <div class="muted pull-left">系统总览</div>
+                    <div class="pull-right"><span class="badge badge-warning"></span>
+                    </div>
+                </div>
+                <div class="block-content collapse in">
+                    <div class="span4">
+                        <a href="{% url 'project' %}"><div class="chart" data-percent="73">{{ project }}</div>
+                            <div class="chart-bottom-heading"><span class="label label-info">
+                                项目</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="span4">
+                        <div class="chart" data-percent="53">{{ gongneng }}</div>
+                        <div class="chart-bottom-heading">
+                            <span class="label label-info">功能逻辑点</span>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="chart" data-percent="83">{{ testcase}}</div>
+                        <div class="chart-bottom-heading">
+                            <span class="label label-info">用例</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="block">
+                <div class=" navbar-inner block-header">
+                    <div class="muted pull-left">今日测试报告</div>
+                    <div class="pull-right"><a href="{% url 'testreport' %}" ><span class="badge badge-warning">更多</span></a>
+                    </div>
+                </div>
+                <div class="block-content collapse in">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>项目</th>
+                            <th>测试报告编号</th>
+                            <th>总计</th>
+                            <th>通过</th>
+                            <th>测试人</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for m in test_report %}
+                            <tr>
+                                <a href="{% url 'testreport' %}"><td>{{ m.project }}</td></a>
+                                <td>{{ m.testcallnum }}</td>
+                                <td>{{ m.tatal }}</td>
+                                <td>{{m.passnum }}</td>
+                                <td>{{ m.testuser }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="block">
+                <div class=" navbar-inner block-header">
+                    <div class="muted pull-left">今日接口使用记录</div>
+                    <div class="pull-right"><span class="badge badge-warning"></span>
+                    </div>
+                </div>
+                <div class="block-content collapse in">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>调用接口</th>
+                            <th>调用者ip</th>
+                            <th>调用者请求头</th>
+                            <th>调用人</th>
+                            <th>调用时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for r in rizhi %}
+                            <tr>
+                                <td>{{r.userjiekou }}</td>
+                                <td>{{ r.useip}}</td>
+                                <td>{{r.userheaders }}</td>
+                                <td>{{ r.useuser }}</td>
+                                <td>{{ r.usedate }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+<hr>
+<footer>
+    <p style="text-align: center"> 由雷子开发设计的APP基于appium的自动化测试平台</p>
+</footer>
+<script>
+    {% block js %}
+        $(function() {
+            // Easy pie charts
+            $('.chart').easyPieChart({animate: 1000});
+        });
+    {% endblock %}
+</script>

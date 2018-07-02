@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}功能逻辑{% endblock %}
+{% block content %}
+    <div class="span9" id="content" >
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">功能逻辑</div>
+            </div>
+            <h4>{{ msg }}</h4>
+            {% if messages %}
+                <div class="messages" style="margin-left: 30px">
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <strong style="margin-left: 5px">选择要查看的项目:</strong>
+            <select id="xuanzezhixing" onclick="sendproject()">
+                {% for project in projects %}
+                    <option>{{ project.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <div class="table-toolbar">
+                        <div class="btn-group">
+                            <a href="{% url 'addfunction' %}">
+                                <input class="btn btn-success"  type="button" value="添加">
+                            </a>
+                        </div>
+                    </div>
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row">
+                            <div class="span6">
+                            </div>
+                        </div>
+                        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example2" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">所属项目</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">所属模块</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">功能名称</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">功能描述</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">创建时间</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 233px;">创建者</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 214px;">操作</th>
+                            </thead>
+                            <tbody role="alert" aria-live="polite" aria-relevant="all" id="luojimix">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    window.onload=sendproject();
+    function sendproject() {
+    var project=document.getElementById('xuanzezhixing');
+    var index=project.selectedIndex;
+    var value = project.options[index].value;
+    $.ajax({
+    url:'{% url 'testfaution' %}',
+    type:'POST',
+    data:value,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if (data['code']==1 ){
+    var insertss=$('#luojimix');
+    insertss.empty();
+    var mdata =data['data'];
+    if (mdata.length<=0){
+    insertss.append("<td style='color: red'>对应项目没有找到功能</td>");
+    }
+    else{
+    for(var i=0;i< mdata.length;i++){
+    insertss.append("<tr class='gradeA odd' id='"+mdata[i].id+"'> <td class='sorting_1'>"+mdata[i].project+"</td><td class='sorting_1'>"+mdata[i].mode+"</td><td class='sorting_1'>"+mdata[i].functionname+"</td><td class='sorting_1'>"+mdata[i].desc+"</td><td class='sorting_1'>"+mdata[i].makedatye+"</td><td class=''>"+mdata[i].user +"</td><td class=''> <a href= '/editfuntion/"+mdata[i].id+"'><button class='btn btn-primary '><i class='icon-pencil icon-white'></i>编辑</button></a><button class='btn btn-danger' onclick='deletefunction("+mdata[i].id+")'><i class='icon-remove icon-white'></i> 删除</button></td></tr>") };
+    };
+    };},error:function (res) {
+    alert('异步请求失败，请联系管理员！！！')
+    window.location.reload();
+    }
+    });
+    };
+    function deletefunction(id) {
+    $.ajax({
+    url:'{% url 'testfaution' %}',
+    type:'DELETE',
+    data:id,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if(data['code']!=2){
+    alert(data['data'])
+    }else{
+    alert(data['data'])
+    caseid=document.getElementById(id);
+    caseid.hidden=true;
+    }
+    }
+    })
+    }
+{% endblock %}

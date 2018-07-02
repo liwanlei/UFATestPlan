@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block title %}项目{% endblock %}
+{% block content %}
+    <div class="span9" id="content">
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">项目</div>
+            </div>
+            <h4>{{ msg }}</h4>
+            {% if messages %}
+                <div class="messages" style="margin-left: 30px">
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <div class="table-toolbar">
+                        <div class="btn-group">
+                            {% if  request.user.is_superuser %}
+                                <button onclick="addproject()" class="btn btn-success">
+                                    {#                            <button href="{% url 'addproject' %}">#}
+                                    添加
+                                    {#                               添加 <input class="btn btn-success"  type="button" value="添加">#}
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row">
+                            <div class="span6">
+                            </div>
+                        </div>
+                        <div>
+                            {% for project in projects %}
+                                <dl style=" width: 20%;height: 332px; box-sizing: border-box;margin: 0px 28px;float: left;cursor: pointer;margin-bottom: 40px;position: relative;" id="{{ project.id }}">
+                                    <dt onclick=""><img src=""></dt>
+                                    <dd>
+                                        <h2 >{{ project.name }} </h2>
+                                        <h6>{{ project.desc }}</h6>
+                                        <div class="courses_content_btm">
+                                            <i class="icon-user"></i>
+                                            <strong>{{ project.makeuser }}</strong>
+                                            <span>
+                                                <i class="icon-envelope"></i>
+                                                {{ project.makeuser.email }}
+                                            </span>
+                                        </div>
+                                        <button class="btn btn-primary btn-mini" onclick="editproject({{project.id}})">
+                                            <i class="icon-pencil icon-white"></i>编辑</button>
+                                        {% if request.user.is_superuser  %}
+                                            <button class="btn btn-danger btn-mini" onclick="deleteproject({{ project.id }})">
+                                                <i class="icon-remove icon-white">
+                                                </i> 删除</button>
+                                        {% else %}
+                                        {% endif %}
+                                    </dd>
+                                </dl>
+                                <div style="display:none;z-index: 210;width: 500px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: lightgray"  id="pre-{{project.id}}">
+                                    <div style="height: 5px;">编辑项目</div>
+                                    <div style="background-color: whitesmoke;margin-top: 24px" >
+                                        <p>
+                                            <span>项目名字：</span>
+                                            <input id="project-{{project.id}}" placeholder="请输入要加入的项目名称" value="{{ project.name }}"></p>
+                                        <span>项目描述：</span>
+                                        <textarea placeholder="对项目的描述" id="desc-{{project.id}}" >{{ project.desc }}</textarea>
+                                        <p>项目类型：
+                                            <select id="fenlei-{{project.id}}">
+                                                <option>app</option>
+                                                <option>web</option>
+                                                <option>混合应用</option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                    <div style="margin-bottom: auto">
+                                        <input value="编辑" type="button" class="btn-default"  onclick="bianji({{project.id}})" >
+                                        <input value="取消" type="button" class=" btn-default"  onclick="quxian({{project.id}})" >
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;z-index: 210;width: 500px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: lightgray"  id="addproject">
+        <div style="height: 5px;">添加项目</div>
+        <div style="background-color: whitesmoke;margin-top: 24px" >
+            <p>
+                <span>项目名字：</span>
+                <input id="project" placeholder="请输入要加入的项目名称"></p>
+            <span>项目描述：</span>
+            <textarea placeholder="对项目的描述" id="desc"></textarea>
+            <p>项目类型：
+                <select id="fenlei">
+                    <option>app</option>
+                    <option>web</option>
+                    <option>混合应用</option>
+                </select>
+            </p>
+        </div>
+        <div style="margin-bottom: auto">
+            <input value="添加" type="button" class="btn-default"  onclick="tianjia()" >
+            <input value="取消" type="button" class=" btn-default"  onclick="guanbi()" >
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    function deleteproject(id) {
+    $.ajax({
+    url:'{% url 'project' %}',
+    type:'DELETE',
+    data:id,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if(data['code']!=2){
+    alert(data['data'])
+    }else{
+    alert(data['data'])
+    caseid=document.getElementById(id);
+    caseid.hidden=true;
+    }
+    }
+    })
+    };
+    function addproject(){
+    m=document.getElementById('addproject');
+    m.style.display=''
+    };
+    function guanbi(){
+    m=document.getElementById('addproject');
+    m.style.display='none'
+    };
+    function tianjia(){
+    var project=document.getElementById('project').value;
+    var desc=document.getElementById('desc').value;
+    var obj = document.getElementById('fenlei');
+    var index=obj.selectedIndex;
+    var fenlei = obj.options[index].value;
+    var data={};
+    data['project']=project;
+    data['desc']=desc;
+    data['fenlei']=fenlei;
+    $.ajax({
+    url: '{%  url 'project' %}',
+    type: 'POST',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if(result['code']==2){
+    alert(result['data']);
+    location.reload()
+    }
+    else{
+    alert(result['data']);
+    }
+    }
+    })
+    };
+    function editproject(id){
+    m=document.getElementById('pre-'+id);
+    m.style.display=''
+    };
+    function quxian(id){
+    m=document.getElementById('pre-'+id);
+    m.style.display='none'
+    };
+    function bianji(id){
+    var project=document.getElementById('project-'+id).value;
+    var desc=document.getElementById('desc-'+id).value;
+    var obj = document.getElementById('fenlei-'+id);
+    var index=obj.selectedIndex;
+    var fenlei = obj.options[index].value;
+    var data={};
+    data['project']=project;
+    data['desc']=desc;
+    data['fenlei']=fenlei;
+    data['id']=id;
+    $.ajax({
+    url: '{%  url 'project' %}',
+    type: 'PUT',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if(result['code']==2){
+    alert(result['data']);
+    location.reload()
+    }
+    else{
+    alert(result['data']);
+    }
+    }
+    }
+    )}
+{% endblock %}

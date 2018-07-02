@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}添加用例{% endblock %}
+{% block content %}
+    <div class="span9" id="content">
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">添加用例</div>
+            </div>
+            <h5 style="color: red" >{{ msg }}</h5>
+            <div class="block-content collapse in">
+                <p class="span12">
+                <div class="table-toolbar">
+                <div class="btn-group">
+                </div>
+            </div>
+                <form   class="form-signin" method="post" action="{% url 'addtestcase' %}">
+                    {% csrf_token %}
+                    <p>
+                        <span> <strong>项目：</strong></span>
+                        <select name="project" id="project" onclick="testevet()" >
+                            {% for project in projects %}
+                                <option >{{ project.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <p>
+                        <span><strong>模块：</strong></span>
+                        <select name="mode">
+                            {% for mode in models %}
+                                <option>{{ mode.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <p>
+                        <span><strong>测试环境：</strong></span>
+                        <select id="testevent" name="testevent"></select>
+                    </p>
+                    <p>
+                        <span><strong>逻辑：</strong></span>
+                        <select  id="luoji" name="luoji" ></select>
+                    </p>
+                    <p>
+                        <span><strong>用例编号：</strong></span>
+                        <input name="casenum" placeholder="用例编号">
+                    </p>
+                    <p>
+                        <span><strong>参数：</strong></span>
+                        <input name="canshu" placeholder="用例参数">
+                    </p>
+                    <strong>是否依赖登录:</strong>
+                    <input type="radio" name="yilai" id="" >
+                    <p><strong>是否作为登录的case:</strong>
+                    <input type="radio" name="login_is" id="" ></p>
+                    <p>
+                        <span><strong>断言：</strong></span>
+                        <input name="assert" placeholder="断言">
+                    </p>
+                    <p>
+                        <span><strong>是否保存测试结果：</strong></span>
+                        <input name="result" type="radio">
+                    </p>
+                    <input type="submit" class="button btn-sunccess" value="添加">
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}
+{% block js %}
+    window.onload=testevet()
+    function testevet() {
+    var obj = document.getElementById('project');
+    var index=obj.selectedIndex;
+    var meth = obj.options[index].value;
+    var testvents= $("#testevent");
+    var luoji=$("#luoji");
+    var yilai=$("#yilaicase");
+    $.ajax({
+    url: '{%  url 'gettestevent' %}',
+    type: 'POST',
+    data: meth,
+    contentType: 'application/json; charset=UTF-8',
+    processData: false,
+    success: function (result) {
+    if (result['code'] == 200) {
+    testvents.empty();
+    luoji.empty();
+    yilai.empty();
+    for(var i = 0; i < result['data'][0].length; i++) {
+    var obj = result['data'][0][i];
+    testvents.append("<option>"+ obj.testevent +"</option>");
+    };
+    for(var i = 0; i < result['data'][1].length; i++) {
+    var obj_d = result['data'][1][i];
+    luoji.append("<option>"+ obj_d.luoji +"</option>");
+    };
+    }
+
+    else {
+    alert(result['msg']);
+    }
+    }
+    });
+    };
+
+{% endblock %}

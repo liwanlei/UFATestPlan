@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% block title %}app性能{% endblock %}
+{% block content %}
+    <div class="span9" id="content">
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">app性能</div>
+            </div>
+            <h4>{{ msg }}</h4>
+            <strong>选择要查看的项目:</strong>
+            <select  style="margin-left: 5px" id="xuanzezhixing" onclick="huoqugongneng()">
+                {% for project in projects %}
+                    <option>{{ project.name }}</option>
+                {% endfor %}
+            </select>
+            <strong>选择要查看的项目的功能:</strong>
+            <select  style="margin-left: 5px" id="xuanzegongneng" onclick="sendproject()">
+            </select>
+            {% if messages %}
+                <div class="messages" style="margin-left: 30px">
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <div id="main" style="width: 800px;height:400px;margin-left: 2%;margin-top: 10px">
+                    </div>
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row">
+                            <div class="span6">
+                            </div>
+                        </div>
+                        <table cellpadding="0" cellspacing="0" border="0" class="table table-hover table table-striped table-bordered dataTable" id="example2" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">测试报告日期</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">测试报告id</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">cpu</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">内存</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">上传流量</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">下行流量</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">设备</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">品牌</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">型号</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">系统版本</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">分辨率</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">创建人</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 214px;">操作</th>
+                            </thead>
+                            <tbody role="alert" aria-live="polite" aria-relevant="all" id="xingnengshuju">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js_add %}
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+{% endblock %}
+{% block js %}
+    window.onload=beijing();
+    function beijing(){
+    huoqugongneng();
+    sendproject();
+    }
+    function baidu(){
+    var dom = document.getElementById("main");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+    title: {
+    text: '性能折线图'
+    },
+    tooltip: {
+    trigger: 'axis'
+    },
+    legend: {
+    data:['CPU','上传流量','下载流量','内存']
+    },
+    grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+    },
+    toolbox: {
+    feature: {
+    saveAsImage: {}
+    }
+    },
+    xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data:  (function (){
+    var now = document.getElementsByClassName('sortingdate');
+    var res = [];
+    for (var i=0;i< now.length;i++)  {
+    res.push((now[i].innerHTML).substring(0,18) );
+    }
+    return res;
+    })()
+    },
+    yAxis: {
+    type: 'value',
+    scale: true
+    },
+    series: [
+    {
+    name:'CPU',
+    type:'line',
+    stack: '总量',
+    data:(function (){
+    var res = [];
+    var data = document.getElementsByClassName('sorting_21');
+    for (var i=0;i< data.length;i++)  {
+    res.push((data[i].innerHTML));
+    }
+    return res;
+    })()
+    },
+    {
+    name:'上传流量',
+    type:'line',
+    stack: '总量',
+    data:(function (){
+    var res = [];
+    var data = document.getElementsByClassName('sorting_23');
+    for (var i=0;i< data.length;i++)  {
+    res.push((data[i].innerHTML));
+    }
+    return res;
+    })()
+    },
+    {
+    name:'下载流量',
+    type:'line',
+    stack: '总量',
+    data:(function (){
+    var res = [];
+    var data = document.getElementsByClassName('sorting_24');
+    for (var i=0;i< data.length;i++)  {
+    res.push((data[i].innerHTML));
+    }
+    return res;
+    })()
+    },
+    {
+    name:'内存',
+    type:'line',
+    stack: '内存',
+    data:(function (){
+    var res = [];
+    var data = document.getElementsByClassName('sorting_22');
+    for (var i=0;i< data.length;i++)  {
+    res.push((data[i].innerHTML));
+    }
+    return res;
+    })()
+    },
+
+    ]
+    };
+    ;
+    if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+    }
+    }
+    function sendproject() {
+    var project=document.getElementById('xuanzezhixing');
+    var index=project.selectedIndex;
+    var value = project.options[index].value;
+    var functioname=document.getElementById('xuanzegongneng');
+    var ind=functioname.selectedIndex;
+    var valfun =functioname.options[ind].value;
+    var data={};
+    data['project']=value;
+    data['funct']=valfun;
+    $.ajax({
+    url:'{% url 'xingneng' %}',
+    type:'POST',
+    data:JSON.stringify(data),
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if (data['code']==1 ){
+    var insertss=$('#xingnengshuju');
+    insertss.empty();
+    var mdata =data['data'];
+    if (mdata.length<=0){
+    insertss.append("<td style='color: red;text-align: center;'>项目的功能没有测试性能</td>");
+    baidu();
+    }
+    else{
+    for(var i=0;i< mdata.length;i++){
+    insertss.append("<tr id='"+mdata[i].id+"'><td class='sortingdate'>"+mdata[i]['make_date']+"</td><td class='sorting_1'>"+mdata[i]['testreport']+"</td><td class='sorting_21'>"+mdata[i]['cpu']+"</td><td class='sorting_22'>"+mdata[i]['neicun']+"</td><td class='sorting_23'>"+mdata[i]['shangxing']+"</td><td class='sorting_24'>"+mdata[i]['xiaxing']+"</td><td class='sorting_1'>"+mdata[i]['shebei']+"</td><td class='sorting_1'>"+mdata[i]['pinpai']+"</td><td class='sorting_1'>"+mdata[i]['xinghao']+"</td> <td class='sorting_1'>"+mdata[i]['xitongbanben']+"</td><td class='sorting_1'>"+mdata[i]['fix']+"</td> <td class='sorting_1'>"+mdata[i]['user']+"</td><td class=' '>{% if request.user.is_superuser  %}<button class='btn btn-danger ' type='button'  onclick='deletexingneng("+mdata[i].id+")'>删除</button>{% else %}{% endif %}</td></tr>");
+    };
+    baidu();
+    };
+    };
+    },error:function (res) {
+    alert('异步请求失败，请联系管理员！！！')
+    window.location.reload();
+    }
+    });
+    }
+    function huoqugongneng() {
+    var project=document.getElementById('xuanzezhixing');
+    var index=project.selectedIndex;
+    var value = project.options[index].value;
+    $.ajax({
+    url:'{% url 'huoxingneng' %}',
+    type:'POST',
+    data:value,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if (data['code']==1 ){
+    var insertss=$('#xuanzegongneng');
+    insertss.empty();
+    var mdata =data['data'];
+
+    if (mdata.length<=0){
+    insertss.append("<td style='color: red;text-align: center;'>没有找到功能</td>");
+    }
+    else{
+    for(var i=0;i< mdata.length;i++){
+    insertss.append("<option>"+mdata[i].funtioname+"</option>") };
+    baidu();
+    };
+    };
+    },error:function (res) {
+    alert('异步请求失败，请联系管理员！！！')
+    window.location.reload();
+    }
+    });
+    };
+    function deletexingneng(id) {
+    $.ajax({
+    url:'{% url 'xingneng' %}',
+    type:'DELETE',
+    data:id,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if(data['code']!=2){
+    alert(data['data'])
+    }else{
+    alert(data['data'])
+    caseid=document.getElementById(id);
+    caseid.hidden=true;
+    }
+    }
+    })
+    }
+{% endblock %}

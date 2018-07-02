@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}测试用例{% endblock %}
+{% block content %}
+    <div class="span9" id="content">
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">测试用例</div>
+            </div>
+            <h4>{{ msg }}</h4>
+            {% if messages %}
+                <div class="messages" style=" margin-left: 10px;">
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        <strong style="margin-left: 5px">选择要查看的项目:</strong>
+            <select id="xuanzezhixing" onclick="sendproject()">
+                {% for project in projects %}
+                    <option>{{ project.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <div class="table-toolbar">
+                        <div class="btn-group">
+                            <a href="{% url 'addtestcase' %}">
+                                <input class="btn btn-success"  type="button" value="添加">
+                            </a>
+                        </div>
+                    </div>
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row">
+                            <div class="span6">
+                            </div>
+                        </div>
+                        <table cellpadding="0" cellspacing="0" border="0" class="table table-hover table table-hover " id="example2" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">用例编号</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">项目</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">依赖登录</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">参数</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">预期</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">逻辑</th>
+                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 168px;">环境</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 233px;">创建者</th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 214px;">操作</th>
+                            </thead>
+                            <tbody role="alert" aria-live="polite" aria-relevant="all" id="casetest">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+     window.onload=sendproject();
+    function sendproject() {
+    var project=document.getElementById('xuanzezhixing');
+    var index=project.selectedIndex;
+    var value = project.options[index].value;
+    $.ajax({
+    url:'{% url 'testcase' %}',
+    type:'POST',
+    data:value,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if (data['code']==1 ){
+    var insertss=$('#casetest');
+    insertss.empty();
+    var mdata =data['data'];
+    if (mdata.length<=0){
+    insertss.append("<td style='color: red; text-align: center;'>没有找到测试用例</td>");
+    }
+    else{
+    for(var i=0;i< mdata.length;i++){
+    insertss.append("<tr class='gradeA odd' id='"+mdata[i].id+"'> <td class='sorting_1'>"+mdata[i].casenum  +"</td> <td class='sorting_1'>"+mdata[i].project  +"</td><td class='sorting_1'>"+mdata[i].yilai  +"</td><td class='sorting_1'>"+mdata[i].data  +"</td><td class='sorting_1'>"+mdata[i].asser +"</td><td class='sorting_1'>"+mdata[i].functionname +"</td><td class='sorting_1'>"+mdata[i].name +"</td><td class=''>"+mdata[i].user+"</td><td class=''> <a href='/editcase/"+mdata[i].id +"'><input class='btn btn-success' type='button' value='编辑'></a>   <button class='btn btn-danger' type='button' onclick='deletecase("+mdata[i].id+")'>删除</button></td> </tr>")};
+    };
+    };
+    },error:function (res) {
+    alert('异步请求失败，请联系管理员！！！')
+    window.location.reload();
+    }
+    });
+    };
+    function deletecase(id) {
+    $.ajax({
+    url:'{% url 'testcase' %}',
+    type:'DELETE',
+    data:id,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if(data['code']!=2){
+    alert(data['data'])
+    }else{
+    alert(data['data'])
+    caseid=document.getElementById(id);
+    caseid.hidden=true;
+    }
+    }
+    })
+    }
+{% endblock %}

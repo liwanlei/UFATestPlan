@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>自动化测试平台自动生成</title>
+    <meta name="generator" content="BSTestRunner 0.8.4"/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    
+<style type="text/css" media="screen">
+
+/* -- css div popup ------------------------------------------------------------------------ */
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    padding: 10px;
+    background-color: #99CCFF;
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 10pt;
+    width: 1200px;
+}
+
+/* -- report ------------------------------------------------------------------------ */
+
+#show_detail_line .label {
+    font-size: 85%;
+    cursor: pointer;
+}
+
+#show_detail_line {
+    margin: 2em auto 1em auto;
+}
+
+#total_row  { font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+</style>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class="container">
+    <div class='heading'>
+<h1>自动化测试平台自动生成</h1>
+<p><strong>Start Time:</strong> 2018-05-15 15:50:56</p>
+<p><strong>Duration:</strong> 0:01:22.554983</p>
+<p><strong>Status:</strong> <span class="text text-warning">Error <strong>2</strong></span></p>
+
+<p class='description'>自动化测试结果</p>
+</div>
+
+
+    
+<p id='show_detail_line'>
+<span class="label label-primary" onclick="showCase(0)">Summary</span>
+<span class="label label-danger" onclick="showCase(1)">Failed</span>
+<span class="label label-default" onclick="showCase(2)">All</span>
+</p>
+<table id='result_table' class="table">
+    <thead>
+        <tr id='header_row'>
+            <th>Test Group/Test case</td>
+            <th>Count</td>
+            <th>Pass</td>
+            <th>Fail</td>
+            <th>Error</td>
+            <th>View</td>
+        </tr>
+    </thead>
+    <tbody>
+        
+<tr class='text text-warning'>
+    <td>uicasetest.ui: 这是ui测试用例</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td>2</td>
+    <td><a class="btn btn-xs btn-primary"href="javascript:showClassDetail('c1',2)">Detail</a></td>
+</tr>
+
+<tr id='ft1.1' class='none'>
+    <td class='text text-warning'><div class='testcase'>test_ui_1: 自动化测试平台自动生成测试</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link btn btn-xs btn-default" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.1')" >
+        error</a>
+
+    <div id='div_ft1.1' class="popup_window">
+        <div style='text-align: right;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.1: [2018-05-15 15:50:56.699070] INFO: UI: 当前模块 开始从配置文件中获取测试相关的配置
+[2018-05-15 15:50:56.699070] INFO: UI: 全部args参数参数信息 , ()
+[2018-05-15 15:50:56.699070] INFO: UI: 全部kwargs参数信息 , {}
+[2018-05-15 15:50:56.699070] INFO: UI: 当前模块 获取性能！！
+[2018-05-15 15:50:56.699570] INFO: UI: 全部args参数参数信息 , ('com.aixuetang.online',)
+[2018-05-15 15:50:56.699570] INFO: UI: 全部kwargs参数信息 , {}
+[2018-05-15 15:51:08.430059] INFO: UI: reg测试用例开始执行
+[2018-05-15 15:51:08.430059] INFO: UI: 当前模块 解析测试步骤
+[2018-05-15 15:51:08.430559] INFO: UI: 全部args参数参数信息 , ()
+[2018-05-15 15:51:08.430559] INFO: UI: 全部kwargs参数信息 , {'deriver': &lt;appium.webdriver.webdriver.WebDriver (session="a730bb18-ebf2-4b34-86ba-7980e204783f")&gt;}
+[2018-05-15 15:51:08.430559] INFO: UI: 当前模块 获取测试前上传下载流量
+[2018-05-15 15:51:08.430559] INFO: UI: 全部args参数参数信息 , (&lt;common.huoqu_xingneng.Getxing object at 0x000000000490BA90&gt;,)
+[2018-05-15 15:51:08.430559] INFO: UI: 全部kwargs参数信息 , {}
+[2018-05-15 15:51:08.992131] INFO: UI: 当前模块 组织测试用例
+[2018-05-15 15:51:08.992631] INFO: UI: 全部args参数参数信息 , (&lt;common.exectfuntion.Makeappcase object at 0x000000000490BEB8&gt;,)
+[2018-05-15 15:51:08.992631] INFO: UI: 全部kwargs参数信息 , {'data_luo': [{'element_api': 'elements', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/fixed_bottom_navigation_title', 'caozuo': 'click', 'canshu': '', 'is_asser': False, 'index': 2}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/login', 'caozuo': 'click', 'canshu': '', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/toolbar_menu', 'caozuo': 'click', 'canshu': '', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/et_username', 'caozuo': 'sendkeys', 'canshu': 'username', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/et_password', 'caozuo': 'sendkeys', 'canshu': 'password', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/tv_register', 'caozuo': 'click', 'canshu': '', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/tv_register', 'caozuo': 'click', 'canshu': '', 'is_asser': True, 'index': 0}], 'data_canshu': '{"username":\'liwanlei\',"password":11}'}
+[2018-05-15 15:51:19.541470] INFO: UI: 测试用例执行完毕，测试环境正在还原！
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\ddt.py", line 139, in wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\appium_ui_test\pc_clicent\case\uicasetest.py", line 42, in test_ui
+    self.assertuen=self.restun.exce_case(data_luo=data_test['luoji'],data_canshu=data_test['data'])
+  File "C:\Users\Administrator\Desktop\appium_ui_test\pc_clicent\common\log.py", line 33, in _wrap
+    return function(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\appium_ui_test\pc_clicent\common\exectfuntion.py", line 23, in exce_case
+    self.f=f_c[data_luo[j]['index']]
+IndexError: list index out of range
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.2' class='none'>
+    <td class='text text-warning'><div class='testcase'>test_ui_2: 自动化测试平台自动生成测试</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link btn btn-xs btn-default" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.2')" >
+        error</a>
+
+    <div id='div_ft1.2' class="popup_window">
+        <div style='text-align: right;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.2: [2018-05-15 15:51:36.700149] INFO: UI: 当前模块 开始从配置文件中获取测试相关的配置
+[2018-05-15 15:51:36.701149] INFO: UI: 全部args参数参数信息 , ()
+[2018-05-15 15:51:36.701149] INFO: UI: 全部kwargs参数信息 , {}
+[2018-05-15 15:51:36.701149] INFO: UI: 当前模块 获取性能！！
+[2018-05-15 15:51:36.701149] INFO: UI: 全部args参数参数信息 , ('com.aixuetang.online',)
+[2018-05-15 15:51:36.701649] INFO: UI: 全部kwargs参数信息 , {}
+[2018-05-15 15:51:48.728677] INFO: UI: reg测试用例开始执行
+[2018-05-15 15:51:48.728677] INFO: UI: 当前模块 解析测试步骤
+[2018-05-15 15:51:48.729177] INFO: UI: 全部args参数参数信息 , ()
+[2018-05-15 15:51:48.729177] INFO: UI: 全部kwargs参数信息 , {'deriver': &lt;appium.webdriver.webdriver.WebDriver (session="af70996b-ab50-44a3-9953-60a3e88398fc")&gt;}
+[2018-05-15 15:51:48.729177] INFO: UI: 依赖登录，执行登录测试用例
+[2018-05-15 15:51:48.729177] INFO: UI: 当前模块 获取依赖的登录case相关
+[2018-05-15 15:51:48.729177] INFO: UI: 全部args参数参数信息 , ()
+[2018-05-15 15:51:48.729677] INFO: UI: 全部kwargs参数信息 , {'testcallnum': 'login1', 'project': '学生app安卓', 'testevet': 'appios版本47环境'}
+[2018-05-15 15:51:48.729677] INFO: UI: 当前模块 requests封装
+[2018-05-15 15:51:48.729677] INFO: UI: 全部args参数参数信息 , ()
+[2018-05-15 15:51:48.729677] INFO: UI: 全部kwargs参数信息 , {}
+[2018-05-15 15:51:48.898198] INFO: UI: 获取依赖登录用例逻辑成功，开始执行登录用例依赖
+[2018-05-15 15:51:48.898198] INFO: UI: 当前模块 组织测试用例
+[2018-05-15 15:51:48.898698] INFO: UI: 全部args参数参数信息 , (&lt;common.exectfuntion.Makeappcase object at 0x0000000004932A90&gt;,)
+[2018-05-15 15:51:48.898698] INFO: UI: 全部kwargs参数信息 , {'data_luo': [{'element_api': 'elements', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/fixed_bottom_navigation_title', 'caozuo': 'click', 'canshu': '', 'is_asser': False, 'index': 2}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/login', 'caozuo': 'click', 'canshu': '', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/et_username', 'caozuo': 'sendkeys', 'canshu': 'username', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/et_password', 'caozuo': 'sendkeys', 'canshu': 'password', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/tv_login', 'caozuo': 'click', 'canshu': '', 'is_asser': False, 'index': 0}, {'element_api': 'element', 'element_ty': 'id', 'elemnet_by': 'com.aixuetang.online:id/tv_coins', 'caozuo': 'text', 'canshu': '', 'is_asser': True, 'index': 0}], 'data_canshu': "{'username':'15964636199','password':'qq111111'}"}
+[2018-05-15 15:52:01.360281] INFO: UI: 测试用例执行完毕，测试环境正在还原！
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Roaming\Python\Python36\site-packages\ddt.py", line 139, in wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\appium_ui_test\pc_clicent\case\uicasetest.py", line 40, in test_ui
+    self.assetuen = self.restun.exce_case(data_luo=return_get['data'][0]['luoji'], data_canshu=return_get['data'][0]['data'])
+  File "C:\Users\Administrator\Desktop\appium_ui_test\pc_clicent\common\log.py", line 33, in _wrap
+    return function(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\appium_ui_test\pc_clicent\common\exectfuntion.py", line 20, in exce_case
+    self.f=case_der.find_ele(lujing=data_luo[j]['elemnet_by'],fangfa=data_luo[j]['element_ty'])
+  File "C:\Users\Administrator\Desktop\appium_ui_test\pc_clicent\common\py_app.py", line 7, in find_ele
+    se=self.driver.find_element_by_id(lujing)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 351, in find_element_by_id
+    return self.find_element(by=By.ID, value=id_)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 955, in find_element
+    'value': value})['value']
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 312, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\appium\webdriver\errorhandler.py", line 29, in check_response
+    raise wde
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\appium\webdriver\errorhandler.py", line 24, in check_response
+    super(MobileErrorHandler, self).check_response(response)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 237, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: An element could not be located on the page using the given search parameters.
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    </tbody>
+    <tfoot>
+        <tr id='total_row'>
+            <td>Total</td>
+            <td>2</td>
+            <td class="text text-success">0</td>
+            <td class="text text-danger">0</td>
+            <td class="text text-warning">2</td>
+            <td>&nbsp;</td>
+        </tr>
+    </tfoot>
+</table>
+
+    <div id='ending'>&nbsp;</div>
+</div>
+
+</body>
+</html>
