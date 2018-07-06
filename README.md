@@ -34,6 +34,8 @@
  ### 启动appium服务，启动测试设备，安装好测试包，就可以run进行测试，测试完成后，测试报告自动上传后台，性能测试自动上传
  ### 平台运行，pc端可以和平台进行交互，通过接口，目前平台提供三个接口供pc端进行使用。
  ### 目前功能有限，后续继续优化。
+ ### 运行效果展示：
+  ![Alt text](https://github.com/liwanlei/UFATestPlan/blob/master/img/11.gif)
  ### 效果图展示：
  ![Alt text](https://github.com/liwanlei/UFATestPlan/blob/master/img/项目.png)
   ![Alt text](https://github.com/liwanlei/UFATestPlan/blob/master/img/测试用例.png)
