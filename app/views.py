@@ -133,9 +133,10 @@ class ProjectView(View):
     def delete(self,request):
         id=request.body.decode('utf-8')
         project = Project.objects.filter(id=id, status=False).first()
-        if str(request.user.work) != '测试主管':
-            backe={'code':1,'data':'权限不足'}
-            return  HttpResponse(json.dumps(backe), content_type="application/json")
+        if request.user.is_superuser is False:
+            if str(request.user.work) != '测试主管':
+                backe={'code':1,'data':'权限不足'}
+                return  HttpResponse(json.dumps(backe), content_type="application/json")
         if project:
             project.status = True
             project.save()

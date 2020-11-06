@@ -1,7 +1,7 @@
 # APPTest 自动化测试平台
 ## 通过python 3.6+django 1.8+xadmin 实现的APP  UI自动化测试平台
 ## 使用说明：
-### git  clone XXX  下载代码，
+### git  clone XXX  下载代码，设计的部分文档见doc文件夹下
 ### 进入目录，安装
         pip install -r requirements.txt
 ### 数据库配置(目前我使用的是sqlite数据库)
@@ -27,6 +27,7 @@
  ### 使用下面地址去访问我们的平台
   <http://127.0.0.1:8000>
   ### 使用下面地址去访问我们的管理后台
+  超级管理员：admin 密码:testqwer
   <http://127.0.0.1:8000/xadmin>
   ###  本系统没有开放注册地址，用户需要在后台添加.
  ### pc端需要 pc_clicent的代码，配置config.py,(备注：pc端没有开源，可以联系作者购买。源码：800一份，可以定制开发，联系qq：952943386
