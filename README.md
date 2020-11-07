@@ -1,7 +1,7 @@
 # APPTest 自动化测试平台
 ## 通过python 3.6+django 1.8+xadmin 实现的APP  UI自动化测试平台
 ## 使用说明：
-### git  clone XXX  下载代码，设计的部分文档见doc文件夹下
+### git  clone https://github.com/liwanlei/UFATestPlan.git  下载代码，设计的部分文档见doc文件夹下
 ### 进入目录，安装
         pip install -r requirements.txt
 ### 数据库配置(目前我使用的是sqlite数据库)
@@ -30,7 +30,9 @@
   超级管理员：admin 密码:testqwer
   <http://127.0.0.1:8000/xadmin>
   ###  本系统没有开放注册地址，用户需要在后台添加.
- ### pc端需要 pc_clicent的代码，配置config.py,(备注：pc端没有开源，可以联系作者购买。源码：800一份，可以定制开发，联系qq：952943386
+ ###  待做:1.目前定时任务还无法区分是ios或者安卓，测试用例也无法区分，可以在项目创建的时候区分IOS或者安卓
+  
+ ### pc端需要 pc_clicent的代码，配置config.py,(备注：pc端没有开源，可以联系作者购买。可以定制开发，联系qq：952943386
  ### pc端需要配置appium测试环境，测试需要连接测试设备。
  ### 启动appium服务，启动测试设备，安装好测试包，就可以run进行测试，测试完成后，测试报告自动上传后台，性能测试自动上传
  ### 平台运行，pc端可以和平台进行交互，通过接口，目前平台提供三个接口供pc端进行使用。

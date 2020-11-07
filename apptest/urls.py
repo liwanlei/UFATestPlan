@@ -16,7 +16,9 @@ from app.views import *
 from common import xadmin
 from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
+
 urlpatterns = [
+    url(r'^timk_opear/', RunTimeTask.as_view(), name='timk_opear'),
     url(r'xadmin/', (xadmin.site.urls)),
     url(r'^login/', LoginView.as_view(), name='login'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
@@ -38,14 +40,15 @@ urlpatterns = [
     url(r'^addtestcase/', login_required(AddCaseView.as_view()), name='addtestcase'),
     url(r'^gettestevent/', login_required(Getevet.as_view()), name='gettestevent'),
     url(r'^gettestcase/', login_required(Getcase.as_view()), name='gettestcase'),
-    url(r'^get_test_case/',login_required(Gettestcase.as_view()),name='get_test_case'),
+    url(r'^get_test_case/', login_required(Gettestcase.as_view()), name='get_test_case'),
     url(r'^addting/', login_required(AddtimgView.as_view()), name='addting'),
     url(r'^editfuntion/(?P<id>\d+)/', login_required(EditFuntionsView.as_view()), name='editfuntion'),
     url(r'^editcase/(?P<id>\d+)/', login_required(EditCaseView.as_view()), name='editcase'),
     url(r'^gettask/', GettaskView.as_view(), name='gettask'),
     url(r'^greatreport/', Greatreport.as_view(), name='greatreport'),
     url(r'^sendxing/', SendXing.as_view(), name='sendxing'),
-    url(r'^file_down/(?P<filename>.*)$',file_down,name='file_down'),
-    url(r'^yilaicase/',YiLaiLogin.as_view(),name='yilaicase'),
-    url(r'^huoxingneng/',login_required(Huoqufun.as_view()),name='huoxingneng'),
+    url(r'^file_down/(?P<filename>.*)$', file_down, name='file_down'),
+    url(r'^yilaicase/', YiLaiLogin.as_view(), name='yilaicase'),
+    url(r'^huoxingneng/', login_required(Huoqufun.as_view()), name='huoxingneng'),
+
 ]

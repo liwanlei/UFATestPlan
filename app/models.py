@@ -1,7 +1,6 @@
 from django.db import models
 import datetime
 from django.contrib.auth.models import AbstractUser
-from common.makemd5 import make_md5
 class Work(models.Model):
     makedate = models.DateTimeField('创建时间', auto_now_add=True)
     zhiwei=models.CharField('职位',max_length=32)
@@ -35,6 +34,10 @@ class Project(models.Model):
     makedate = models.DateTimeField('创建时间', auto_now_add=True)
     status=models.BooleanField('状态',default=False)
     fenlei=models.CharField('类型',choices=type,null=True,max_length=8)
+
+    #项目类型，默认是安卓。也可以是ios 或者 web
+    proeject=models.CharField('项目类型',null=True,max_length=8,default="android")
+
     change_time=models.DateTimeField('更新时间',auto_now_add=True)
     makeuser=models.ForeignKey(Newusers,null=True)
     class Meta:
@@ -142,6 +145,8 @@ class Timmingtask(models.Model):
     taskstart = models.CharField('任务执行时间',max_length=64)  # 任务执行时间
     taskmakedate = models.DateTimeField('创建时间', auto_now_add=True)  # 任务的创建时间
     tesevent=models.ForeignKey(Testeven,on_delete=None)
+    taskiphonetype = models.CharField('任务设备类型', default="android", max_length=8)
+    taskiphonenum = models.IntegerField('任务设备的数量',  max_length=8,default=1)
     status = models.BooleanField('任务状态', default=False)  # 任务状态，默认正常状态
     yunxing_status = models.CharField('任务的运行状态，',max_length=16, default=u'创建')  # 任务的运行状态，默认是创建
     prject = models.ForeignKey(Project,on_delete=None)  # 任务所属的项目
@@ -219,5 +224,78 @@ class JiekouDeail(models.Model):
         verbose_name = u'接口调用'
         verbose_name_plural = verbose_name
         ordering = ['-id']
+    def __str__(self):
+        return str(self.id)
+
+#任务列表
+class TaskList(models.Model):
+    '''待做任务列表
+    1.多用例
+    2.定时任务
+    '''
+    #ture 删除 False 正常
+    status = models.BooleanField('状态', default=False)
+
+    #默认状态0 创建，1执行中，2执行失败，3执行完毕 4.暂停
+    tasktype=models.IntegerField('任务状态',null=True,blank=True,default=0)
+
+    #任务的类型 默认andoid
+    taskiphonetype=models.CharField('任务设备',default="android",max_length=8)
+
+    #所属项目
+    project = models.IntegerField('执行设备数', null=False, blank=True)
+
+    #执行设备数
+    runphonenum = models.IntegerField('执行设备数', null=True, blank=True, default=1)
+
+    #是否收集性能数据
+    iscollectperformncedata=models.BooleanField('是否收集性能数据', default=True)
+
+
+    #任务的类型  0 定时任务 1 测试用例
+    tasklisttype= models.IntegerField('任务列表的类型', null=False, blank=True,default=0)
+
+    class Meta:
+        verbose_name = u'任务列表'
+        verbose_name_plural = verbose_name
+        ordering = ['-id']
+
+    def __str__(self):
+        return str(self.id)
+
+
+#任务的case表格
+class  TasklistCase(models.Model):
+    status = models.BooleanField('状态', default=False)
+    task = models.IntegerField('执行任务', null=True, blank=True)
+    caserun = models.IntegerField('执行caseID', null=True, blank=True)
+
+
+    class Meta:
+            verbose_name = u'任务用例表'
+            verbose_name_plural = verbose_name
+            ordering = ['-id']
+
+    def __str__(self):
+        return str(self.id)
+
+
+#任务的定时任务关系表
+class  TasklistTask(models.Model):
+
+    #状态
+    status = models.BooleanField('状态', default=False)
+
+    #任务id
+    task=models.IntegerField('执行任务', null=True, blank=True)
+
+    #要执行的定时任务
+    taskrun = models.IntegerField('执行任务ID', null=True, blank=True)
+
+    class Meta:
+        verbose_name = u'任务定时任务表'
+        verbose_name_plural = verbose_name
+        ordering = ['-id']
+
     def __str__(self):
         return str(self.id)

@@ -1415,3 +1415,41 @@ class Huoqufun(View):
             data.append({'funtioname':fun.functionname})
         rebckdata = {'code': 1, 'data': data}
         return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+class RunTimeTask(View):
+    #定时任务的启动，暂停，恢复
+    def get(self,request):
+        id = request.GET.get('id')
+        task=Timmingtask.objects.filter(id=id,status=0).first()
+        if task:
+            if task.yunxing_status=="创建":
+                task.yunxing_status="运行"
+                task.save()
+                tasklist=TaskList(project=task.prject.id,
+                                  taskiphonetype=task.taskiphonetype,
+                                  runphonenum=task.taskiphonenum,
+                                  tasktype=1,tasklisttype=1)
+                tasklist.save()
+                tasklistask=TasklistTask(task=tasklist.id,taskrun=task.id)
+                tasklistask.save()
+                rebckdata = {'code': 0, 'data': "定时任务启动成功"}
+                return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+            elif task.yunxing_status=="运行":
+                task.yunxing_status = "暂停"
+                task.save()
+                taskone=TasklistTask.objects.filter(taskrun=task.id).first()
+                if taskone:
+                    taskone.status=False
+                    taskone.save()
+                rebckdata = {'code': 0, 'data': "定时任务暂停成功"}
+                return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+            elif task.yunxing_status=="暂停":
+                task.yunxing_status = "运行"
+                task.save()
+                taskone=TasklistTask.objects.filter(taskrun=task.id).first()
+                if taskone:
+                    taskone.status=True
+                    taskone.save()
+                rebckdata = {'code': 0, 'data': "定时任务回复成功"}
+                return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+        rebckdata = {'code': 1, 'data': "定时任务不存在"}
+        return HttpResponse(json.dumps(rebckdata), content_type="application/json")
