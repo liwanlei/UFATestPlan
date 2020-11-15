@@ -1453,3 +1453,80 @@ class RunTimeTask(View):
                 return HttpResponse(json.dumps(rebckdata), content_type="application/json")
         rebckdata = {'code': 1, 'data': "定时任务不存在"}
         return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+
+class RunprojectTestCaseView(View):
+    def post(self,request):
+        projetc = request.body.decode('utf-8')
+        projectone=Project.objects.filter(name=projetc,status=0).first()
+        if not  projectone:
+            rebckdata = {'code': 1, 'data': "项目不存在"}
+            return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+        allcase=Testcase.objects.filter(project=projectone,status=0).all()
+        if len(allcase)==0:
+            rebckdata = {'code': 1, 'data': "项目没有测试用例"}
+            return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+
+        new_task=TaskList(taskiphonetype='android',project=projectone.id,
+                          runphonenum=1,tasklisttype=1)
+        new_task.save()
+        for itemcase in allcase:
+            task=TasklistCase(task=new_task.id,caserun=itemcase.id,status=False)
+            task.save()
+        rebckdata = {'code': 0, 'data': str(new_task.id)}
+        return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+
+'''
+    1.获取任务
+    2.获取任务的详情，类型，执行设备数，执行的case，执行的环境对执行端下发
+    3.任务下发后任务改变为下发成功
+    4.接口接受任务的状态的变更 POST方式请求，获取请求参数，对任务的状态做变更
+'''
+class GetRunTaskAll(View):
+    def get(self,request):
+        task_all=TaskList.objects.filter(status=0,tasktype="创建").all()
+        rebckdata = {'code': 0, 'data': task_all}
+        for task in task_all:
+            task.tasktype="执行中"
+            task.save()
+        return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+    def post(self,request):
+        id=request.body.decode('utf-8')
+        try:
+            id_int=int(id)
+            task=TaskList.objects.filter(id=id_int,status=0).first()
+            if not  task:
+                rebckdata = {'code': 1, 'data': "任务不存在"}
+                return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+            #只有测试用例任务才改变任务的状态
+            if task.tasklisttype==1:
+                task.tasktype=3
+                task.save()
+            rebckdata = {'code': 0, 'data': "成功"}
+            return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+        except:
+            rebckdata = {'code': 1, 'data': "参数类型错误"}
+            return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+
+'''
+1。根据ID返回case或者定时任务的列表
+'''
+class GetTaskDetailView(View):
+    def post(self,request):
+        id = request.body.decode('utf-8')
+        try:
+            id_int = int(id)
+            taskone = TaskList.objects.filter(id=id_int, status=0).first()
+            if not taskone:
+                rebckdata = {'code': 1, 'data': "任务不存在"}
+                return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+            if(taskone.tasklisttype==0):
+                all=TasklistTask.objects.filter(task=taskone.id,status=False).all()
+                rebckdata = {'code':0, 'data': all}
+                return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+            else:
+                all = TasklistCase.objects.filter(task=taskone.id, status=False).all()
+                rebckdata = {'code': 0, 'data': all}
+                return HttpResponse(json.dumps(rebckdata), content_type="application/json")
+        except:
+            rebckdata = {'code': 1, 'data': "参数类型错误"}
+            return HttpResponse(json.dumps(rebckdata), content_type="application/json")

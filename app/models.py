@@ -243,7 +243,7 @@ class TaskList(models.Model):
     taskiphonetype=models.CharField('任务设备',default="android",max_length=8)
 
     #所属项目
-    project = models.IntegerField('执行设备数', null=False, blank=True)
+    project = models.IntegerField('所属项目', null=False, blank=True)
 
     #执行设备数
     runphonenum = models.IntegerField('执行设备数', null=True, blank=True, default=1)

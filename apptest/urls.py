@@ -50,5 +50,12 @@ urlpatterns = [
     url(r'^file_down/(?P<filename>.*)$', file_down, name='file_down'),
     url(r'^yilaicase/', YiLaiLogin.as_view(), name='yilaicase'),
     url(r'^huoxingneng/', login_required(Huoqufun.as_view()), name='huoxingneng'),
+    url(r'^runprojecttest/', RunprojectTestCaseView.as_view(), name='runprojecttest'),
+
+    #pc端获取所有的测试任务
+    url(r'^alltask/', GetRunTaskAll.as_view(), name='alltask'),
+
+    #pc端获取单个任务的详细信息
+    url(r'^taskdetail/', GetTaskDetailView.as_view(), name='taskdetail'),
 
 ]

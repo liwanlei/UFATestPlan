@@ -28,6 +28,11 @@
                                 <input class="btn btn-success"  type="button" value="添加">
                             </a>
                         </div>
+
+                        <div class="btn-group">
+                                <input class="btn btn-success"  type="button" value="执行项目用例" id="runprojecttestcase">
+
+                        </div>
                     </div>
                     <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
                         <div class="row">
@@ -58,6 +63,28 @@
     </div>
 {% endblock %}
 {% block js %}
+    var  onclinlkproject=document.getElementById("runprojecttestcase");
+
+    onclinlkproject.onclick=function(){
+    var project=document.getElementById('xuanzezhixing');
+    var index=project.selectedIndex;
+    var value = project.options[index].value;
+    $.ajax({
+        url:'{% url 'runprojecttest' %}',
+    type:'POST',
+    data:value,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if (data['code']!=0 ){
+        alert(data['data'])
+    }else{
+        alert("任务添加成功！")
+    }
+    }
+    })
+
+    }
      window.onload=sendproject();
     function sendproject() {
     var project=document.getElementById('xuanzezhixing');
