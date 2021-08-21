@@ -3,16 +3,14 @@ ddt==1.1.1
 decorator==4.0.11
 defusedxml==0.5.0
 diff-match-patch==20121119
-Django==1.11.29
-django-admin-bootstrapped==2.5.7
+Django==3.2.6
 django-admin-hstore==0.1.11
-django-crispy-forms==1.7.0
+django-crispy-forms==1.8.0
 django-extensions==1.9.6
 django-formtools==2.1
 django-import-export==1.0.0
 DjangoUeditor==1.8.143
 Logbook==1.1.0
-
 reversion==0.2
 future==0.18.2
 
