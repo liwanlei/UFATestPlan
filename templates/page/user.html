@@ -62,7 +62,11 @@
                                            <button class="btn btn-danger " onclick="deleteuser({{ user.id }})">
                                                <i class="icon-remove icon-white"></i> 删除</button>
                                         <a href="{% url 'resetuser' id=user.id %}">
-                                            <button class="btn btn-inverse"><i class="icon-refresh icon-white"></i> 重置密码</button></a>
+                                            <button class="btn btn-inverse">
+                                                <i class="icon-refresh icon-white"></i> 重置密码</button>
+                                        </a>
+                                         <button class="btn btn-primary " onclick="changetoken({{ user.id }})">
+                                               <i class="icon-remove icon-white"></i> 产生token</button>
                                     </td>
                                 </tr>
                                 <div style="display:none;z-index: 210;width: 500px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);box-shadow: 0 0 10px rgba(0,0,0,0.6);border: solid 1px #255c71;border-radius: 5px 5px 0 0;background-color: lightgray"  id="edituser-{{ user.id }}">
@@ -147,6 +151,23 @@
     </div>
 {% endblock %}
 {% block js %}
+    function  changetoken(id){
+    $.ajax({
+    url:'{% url 'useratoken' %}',
+    type:'DELETE',
+    data:id,
+    contentType: 'application/json; charset=UTF-8',
+    processData:false,
+    success:function(data){
+    if(data['code']!=2){
+      alert(data['data'])
+    }else{
+        alert(data['data'])
+    }
+    }
+    })
+    }
+
     function deleteuser(id) {
     $.ajax({
     url:'{% url 'useradmin' %}',

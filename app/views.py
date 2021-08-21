@@ -282,6 +282,20 @@ class TestEvevtView(View):
         id_is.save()
         back = {'code':2, 'data': '编辑成功!'}
         return HttpResponse(json.dumps(back), content_type="application/json")
+class useratokenView(View):
+    def delete(self,request):
+        id = request.body.decode('utf-8')
+        try:
+            user_token = Newusers.objects.get(id=id, status=False)
+            token = make_md5(user_token.username + user_token.work.zhiwei)
+            user_token.token=token
+            user_token.save()
+            back = {'code': 2, 'data': 'token:{}生成成功'.format(token)}
+            return HttpResponse(json.dumps(back), content_type="application/json")
+        except Exception as e:
+            print(e)
+            back = {'code': 3, 'data': '产生token失败，原因是：%s' % e}
+            return HttpResponse(json.dumps(back), content_type="application/json")
 class UseradminView(View):
     def get(self,request):
         users=Newusers.objects.filter(status=False).all()

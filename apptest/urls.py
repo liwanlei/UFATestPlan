@@ -13,13 +13,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from app.views import *
-from common import xadmin
+from django.contrib import admin
 from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     url(r'^timk_opear/', RunTimeTask.as_view(), name='timk_opear'),
-    url(r'xadmin/', (xadmin.site.urls)),
+    # url(r'admin/', (admin.site.urls)),
     url(r'^login/', LoginView.as_view(), name='login'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^$', login_required(IndexView.as_view())),
@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^xingneng/', login_required(XingnengView.as_view()), name='xingneng'),
     url(r'^changepassword/', login_required(ChangepasswordView.as_view()), name='changepassword'),
     url(r'^useradmin/', login_required(UseradminView.as_view()), name='useradmin'),
+    url(r'^useratoken/', login_required(useratokenView.as_view()), name='useratoken'),
     url(r'^testcase/', login_required(TestCaseView.as_view()), name='testcase'),
     url(r'^tingtask/', login_required(TingtaskViews.as_view()), name='tingtask'),
     url(r'^testreport/', login_required(TestReportView.as_view()), name='testreport'),
