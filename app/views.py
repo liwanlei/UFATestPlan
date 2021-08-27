@@ -8,7 +8,7 @@ from django.contrib import messages
 import json,os,datetime
 from django.http import HttpResponse,FileResponse
 def file_down(request,filename):
-    bashPath=os.getcwd()+'//testreport//'
+    bashPath=os.path.join(os.getcwd(),'testreport')
     file_name = bashPath + filename
     def file_iterator(file_name, buf_size=8192):
         with open(file_name,'rb') as f:
@@ -573,6 +573,7 @@ class AddCaseView(View):
             return render(request, 'add/addtescase.html', {'projects': project_list, 'models': models,'msg':'添加测试用例失败，原因：%s'%e})
 class EditCaseView(View):
     def get(self,request,id):
+
         if request.user.is_superuser is False:
             use=Newusers.objects.filter(username=request.user).first()
             m=use.project_user_set.all()
@@ -585,6 +586,7 @@ class EditCaseView(View):
             project_list = Project.objects.filter(status=False).all()
         models = Mode.objects.filter(status=False).all()
         case_is=Testcase.objects.filter(id=id,status=False).first()
+
         if not  case_is:
             messages.add_message(request, messages.INFO, '编辑测试用例不存在')
             return  redirect('testcase')

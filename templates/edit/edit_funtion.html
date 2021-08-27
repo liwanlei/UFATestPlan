@@ -70,7 +70,7 @@
                                 </select>
                             </div>
                         </div>
-                        <table class="table table-conde" id="tab" style="width:100%">
+                        <table  id="tab">
                             <thead>
                             <th>顺序</th>
                             <th>描述</th>
@@ -90,9 +90,10 @@
                                     <td>{{ luo.xianhoui }}</td>
                                     <input name="id"   value = {{ luo.id }} type='hidden' >
                                     <td>
-                                        <input name="descr"  placeholder="请输入步骤描述" type="input" {{ luo.desc }}></td>
+                                        <input name="descr"  placeholder="请输入步骤描述" value= {{ luo.desc }} style="width: 110px;"></td>
                                     <td>
-                                        <select id="keyword_1" name="keyword" class="ak-left ac-aselect col01" required="" style="    width: 110px;">
+                                        <select id="keyword_1" name="keyword"  style="width: 100px;" required="" >
+                                            {% if luo.element_ty == 'id' %}
                                             <option>id</option>
                                             <option>name</option>
                                             <option>class_name</option>
@@ -101,33 +102,126 @@
                                             <option>link_text</option>
                                             <option>portial_link_text</option>
                                             <option>css_selector</option>
+                                            {% elif luo.element_ty == 'name' %}
+                                            <option>name</option>
+                                             <option>id</option>
+                                            <option>class_name</option>
+                                            <option>xpath</option>
+                                            <option>tag_name</option>
+                                            <option>link_text</option>
+                                            <option>portial_link_text</option>
+                                            <option>css_selector</option>
+                                            {% elif luo.element_ty == 'class_name' %}
+                                            <option>class_name</option>
+                                            <option>name</option>
+                                             <option>id</option>
+                                            <option>xpath</option>
+                                            <option>tag_name</option>
+                                            <option>link_text</option>
+                                            <option>portial_link_text</option>
+                                            <option>css_selector</option>
+                                             {% elif luo.element_ty == 'xpath' %}
+                                            <option>xpath</option>
+                                             <option>class_name</option>
+                                            <option>name</option>
+                                             <option>id</option>
+                                            <option>tag_name</option>
+                                            <option>link_text</option>
+                                            <option>portial_link_text</option>
+                                            <option>css_selector</option>
+                                            {% elif luo.element_ty == 'tag_name' %}
+                                             <option>tag_name</option>
+                                             <option>xpath</option>
+                                             <option>class_name</option>
+                                            <option>name</option>
+                                             <option>id</option>
+                                            <option>link_text</option>
+                                            <option>portial_link_text</option>
+                                            <option>css_selector</option>
+                                             {% elif luo.element_ty == 'link_text' %}
+                                             <option>link_text</option>
+                                            <option>tag_name</option>
+                                             <option>xpath</option>
+                                             <option>class_name</option>
+                                            <option>name</option>
+                                             <option>id</option>
+                                            <option>portial_link_text</option>
+                                            <option>css_selector</option>
+                                             {% elif luo.element_ty == 'portial_link_text' %}
+                                             <option>portial_link_text</option>
+                                            <option>link_text</option>
+                                            <option>tag_name</option>
+                                             <option>xpath</option>
+                                             <option>class_name</option>
+                                            <option>name</option>
+                                             <option>id</option>
+                                            <option>css_selector</option>
+                                            {% elif luo.element_ty == 'css_selector' %}
+                                             <option>css_selector</option>
+                                            <option>portial_link_text</option>
+                                            <option>link_text</option>
+                                            <option>tag_name</option>
+                                             <option>xpath</option>
+                                             <option>class_name</option>
+                                            <option>name</option>
+                                             <option>id</option>
+                                            {% else %}
+                                             <option>id</option>
+                                            <option>name</option>
+                                            <option>class_name</option>
+                                            <option>xpath</option>
+                                            <option>tag_name</option>
+                                            <option>link_text</option>
+                                            <option>portial_link_text</option>
+                                            <option>css_selector</option>
+                                            {% endif %}
                                         </select>
                                     </td>
-                                    <td>
-                                        <input id="autocomplete_1" name="autocomplete" class="ui-autocomplete-input ac-element-input" type="input" value="{{ luo.elemnet_by }}">
+                                    <td >
+                                        <input id="autocomplete_1" name="autocomplete" class="ui-autocomplete-input ac-element-input"   value="{{ luo.elemnet_by }}">
                                     </td>
                                     <td>
-                                        <select name="type"  style="    width: 110px;">
+                                        <select name="type"  style="width: 110px;">
+                                            {% if luo.element_api == "element"  %}
+
                                             <option>element</option>
                                             <option>elements</option>
+                                            {% elif luo.element_api == "elements" %}
+                                            <option>elements</option>
+                                              <option>element</option>
+                                            {% else %}
+                                            <option>elements</option>
+                                              <option>element</option>
+                                            {% endif %}
+
                                         </select>
                                     </td>
-                                      <td>
-                                    <input name="index" placeholder="如果选择elements必须添加索引" value=" {{ luo.index }}">
+                                      <td >
+                                    <input name="index" style="width: 110px;" placeholder="如果选择elements必须添加索引" value=" {{ luo.index }}">
                                 </td>
                                     <td>
-                                        <select name="caozuo" style=" width: 110px;">
-                                            <option>click</option>
-                                            <option>sendkeys</option>
+                                        <select name="caozuo" style="width: 110px;">
+                                            {% if luo.caozuo == "click" %}
+                                             <option>click</option>
+                                             <option>sendkeys</option>
                                             <option>text</option>
+                                            {% elif luo.caozuo == "sendkeys" %}
+                                            <option>sendkeys</option>
+                                            <option>click</option>
+                                            <option>text</option>
+                                            {% else %}
+                                             <option>text</option>
+                                             <option>sendkeys</option>
+                                            <option>click</option>
+                                            {% endif %}
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="text" name="canshu" placeholder="如果需要参数，则填写参数" value="
+                                        <input  style="width: 100px;"type="text" name="canshu" placeholder="如果需要参数，则填写参数" value="
 {{ luo.canshu }}">
                                     </td>
                                     <td >
-                                        <select name="duanyan" style="    width: 110px;">
+                                        <select name="duanyan" style="width: 110px;">
                                             <option>否</option>
                                             <option>是</option>
                                         </select>
@@ -160,11 +254,11 @@
 
     $("#tab tbody").append('<tr id=row'+len+' name="rowstep">'
     +'<td>'+len+'</td>'
-    +'<td><input name="descr" class="ac-acaseedit-input" placeholder="请输入步骤描述" type="input"><input name="id"   value = " " type="hidden" ></td>'
+    +'<td><input name="descr" class="ac-acaseedit-input" placeholder="请输入步骤描述" type="input" style="width: 100px;"><input name="id"   value = " " type="hidden" style="width: 100px;"></td>'
     +'<td><select id="keyword_'+len+'" name="keyword" class="ak-left ac-aselect col01" style="  width: 110px;"><option>id</option><option>name</option><option>class_name</option><option>xpath</option><option>tag_name</option><option>link_text</option><option>portial_link_text</option> <option>css_selector</option></select></td>'
-    +'<td><input id="autocomplete_'+len+'" name="autocomplete" class="ui-autocomplete-input ac-element-input" type="input"><input type="hidden" id="elementid_'+len+'" name="elementid" value="None"></td>'
-    +'<td><select name="type" style="width: 110px;"><option>element</option><option>elements</option></select></td>  <td> <input name="index" placeholder="如果选择elements必须添加索引"></td>'
-    +'<td> <select name="caozuo" style="width: 110px;"><option>click</option> <option>sendkeys</option><option>text</option></select></td><td><input type="text" name="canshu" placeholder="如果需要参数，则填写参数"></td><td><select name="duanyan" style="    width: 110px;"><option>否</option><option>是</option></select></td>'
+    +'<td><input id="autocomplete_'+len+'" name="autocomplete" class="ui-autocomplete-input ac-element-input" ><input type="hidden" id="elementid_'+len+'" name="elementid" value="None" ></td>'
+    +'<td><select name="type" style="width: 110px;"><option>element</option><option>elements</option></select></td>  <td> <input name="index" placeholder="如果选择elements必须添加索引" style="width: 110px;"></td>'
+    +'<td> <select name="caozuo" style="width: 110px;"><option>click</option> <option>sendkeys</option><option>text</option></select></td><td><input type="text" name="canshu" placeholder="如果需要参数，则填写参数" style="width: 100px;"></td><td><select name="duanyan" style="    width: 110px;"><option>否</option><option>是</option></select></td>'
     +'<td><a  title="删除" class="ke-ablock" onclick="deltr('+len+')"><i class="">删除</i></a>' +
         '</td></tr>');
     $("#linecounter").val(len);
