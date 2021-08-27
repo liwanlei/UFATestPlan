@@ -9,7 +9,7 @@ import json,os,datetime
 from django.http import HttpResponse,FileResponse
 def file_down(request,filename):
     bashPath=os.path.join(os.getcwd(),'testreport')
-    file_name = bashPath + filename
+    file_name = os.path.join(bashPath ,filename)
     def file_iterator(file_name, buf_size=8192):
         with open(file_name,'rb') as f:
             while True:
