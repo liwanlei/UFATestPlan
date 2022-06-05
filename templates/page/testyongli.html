@@ -29,10 +29,16 @@
                             </a>
                         </div>
 
+
+<form action="{% url 'runprojecttest' %}" enctype="multipart/form-data" method="post">
+     <div class="btn-group">
+                            <input type="file" name="projectapk">
+                        </div>
+</form>
                         <div class="btn-group">
                                 <input class="btn btn-success"  type="button" value="执行项目用例" id="runprojecttestcase">
-
                         </div>
+
                     </div>
                     <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
                         <div class="row">
@@ -69,12 +75,16 @@
     var project=document.getElementById('xuanzezhixing');
     var index=project.selectedIndex;
     var value = project.options[index].value;
+ var file_obj = $('[name=projectapk]')[0].files[0];
+var formdata = new FormData();
+ formdata.append('project',value);
+        formdata.append('file',file_obj);
     $.ajax({
         url:'{% url 'runprojecttest' %}',
     type:'POST',
-    data:value,
-    contentType: 'application/json; charset=UTF-8',
+    data:formdata,
     processData:false,
+            contentType: false,
     success:function(data){
     if (data['code']!=0 ){
         alert(data['data'])

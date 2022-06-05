@@ -12,26 +12,27 @@
         .description{ color: #0066cc; margin-top: 2px; width: 450px; height: 45px;float: left;line-height: 22px}
         #upload{width: 100px;height: 30px;float: right; margin:10px 2px 0 0;cursor: pointer;}
         #msg{ width: 140px; height: 30px; line-height:25px;float: left;color: red}
+
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="localPath">
-            <input id="localPath" type="text" readonly />
-            <div id="clipboard"></div>
-            <div id="msg"></div>
-        </div>
-        <div id="flashContainer"></div>
-        <div>
-            <div id="upload" style="display: none" ><img id="uploadBtn"></div>
-            <div class="description">
-                <span style="color: red"><var id="lang_resave"></var>: </span><var id="lang_step"></var>
-            </div>
-          </div>
+<div class="wrapper">
+    <div class="localPath">
+        <input id="localPath" type="text" readonly/>
+        <div id="clipboard"></div>
+        <div id="msg"></div>
     </div>
-    <script type="text/javascript" src="tangram.js"></script>
-    <script type="text/javascript" src="wordimage.js"></script>
-    <script type="text/javascript">
+    <div id="flashContainer"></div>
+    <div>
+        <div id="upload" style="display: none"><img id="uploadBtn"></div>
+        <div class="description">
+            <span style="color: red"><var id="lang_resave"></var>: </span><var id="lang_step"></var>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="tangram.js"></script>
+<script type="text/javascript" src="wordimage.js"></script>
+<script type="text/javascript">
         editor.setOpt({
             wordImageFieldName:"upfile",
             compressSide:0,
@@ -105,7 +106,8 @@
             wordImage.init(flashOptions,callbacks);
         });
 
-    </script>
+
+</script>
 
 </body>
 </html>

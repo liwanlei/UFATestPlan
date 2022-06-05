@@ -143,8 +143,11 @@ class Timmingtask(models.Model):
     name=models.CharField('定时任务名字',max_length=64)
     makeuser = models.ForeignKey(Newusers,on_delete=models.CASCADE) # 创建者
     taskstart = models.CharField('任务执行时间',max_length=64)  # 任务执行时间
+    tasktyped=models.CharField("任务类型",max_length=32,default='一次性任务')
+    casetype=models.CharField("用例类型",max_length=32,default="UIcase")
     taskmakedate = models.DateTimeField('创建时间', auto_now_add=True)  # 任务的创建时间
     tesevent=models.ForeignKey(Testeven,on_delete=models.CASCADE)
+    apkfilepath=models.CharField("测试apk路径",max_length=32)
     taskiphonetype = models.CharField('任务设备类型', default="android", max_length=8)
     taskiphonenum = models.IntegerField('任务设备的数量',  max_length=8,default=1)
     status = models.BooleanField('任务状态', default=False)  # 任务状态，默认正常状态

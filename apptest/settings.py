@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'app',
     'crispy_forms',
     'reversion',
-    'DjangoUeditor'
+    'DjangoUeditor',
+    'django_apscheduler'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,12 +76,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTH_USER_MODEL = 'app.Newusers'
 LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 USE_L10N = True
-MEDIA_ROOT = os.path.join(BASE_DIR, '/testreport/').replace('\\', '/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'testreport').replace('\\', '/')
 MEDIA_URL = '/testreport/'
 USE_TZ = True
 SESSION_COOKIE_AGE = 20*3600

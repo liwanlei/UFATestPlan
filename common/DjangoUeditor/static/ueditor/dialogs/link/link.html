@@ -9,32 +9,33 @@
         *{margin:0;padding:0;color: #838383;}
         table{font-size: 12px;margin: 10px;line-height: 30px}
         .txt{width:300px;height:21px;line-height:21px;border:1px solid #d7d7d7;}
+
     </style>
 </head>
 <body>
-    <table>
-        <tr>
-            <td><label for="text"> <var id="lang_input_text"></var></label></td>
-            <td><input class="txt" id="text" type="text" disabled="true"/></td>
-        </tr>
-        <tr>
-            <td><label for="href"> <var id="lang_input_url"></var></label></td>
-            <td><input class="txt" id="href" type="text" /></td>
-        </tr>
-        <tr>
-            <td><label for="title"> <var id="lang_input_title"></var></label></td>
-            <td><input class="txt" id="title" type="text"/></td>
-        </tr>
-        <tr>
-             <td colspan="2">
-                 <label for="target"><var id="lang_input_target"></var></label>
-                 <input id="target" type="checkbox"/>
-             </td>
-        </tr>
-        <tr>
-            <td colspan="2" id="msg"></td>
-        </tr>
-    </table>
+<table>
+    <tr>
+        <td><label for="text"> <var id="lang_input_text"></var></label></td>
+        <td><input class="txt" id="text" type="text" disabled="true"/></td>
+    </tr>
+    <tr>
+        <td><label for="href"> <var id="lang_input_url"></var></label></td>
+        <td><input class="txt" id="href" type="text"/></td>
+    </tr>
+    <tr>
+        <td><label for="title"> <var id="lang_input_title"></var></label></td>
+        <td><input class="txt" id="title" type="text"/></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <label for="target"><var id="lang_input_target"></var></label>
+            <input id="target" type="checkbox"/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" id="msg"></td>
+    </tr>
+</table>
 <script type="text/javascript">
     var range = editor.selection.getRange(),
         link = range.collapsed ? editor.queryCommandValue( "link" ) : editor.selection.getStart(),
@@ -119,6 +120,7 @@
         }
         return false;
     }
+
 
 
 </script>

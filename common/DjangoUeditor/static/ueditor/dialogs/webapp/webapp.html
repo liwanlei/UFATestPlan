@@ -8,13 +8,14 @@
         .wrapper{width: 540px; margin: 10px auto;}
         #appShow {border: 1px solid #ddd;}
         .errorMsg{font-size: 13px;margin: 10px;color: #dd0000}
+
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div id="appShow"></div>
-    </div>
-    <script type="text/javascript">
+<div class="wrapper">
+    <div id="appShow"></div>
+</div>
+<script type="text/javascript">
         //此处配置您在百度上申请到的appkey。
         var apikey = editor.options.webAppKey;
         if ( apikey && apikey.length == 24 ) {
@@ -48,6 +49,7 @@
             $G( "appShow" ).innerHTML = "<p class='errorMsg'>"+lang.tip1+"<a title='"+lang.anthorApi+"' href='http://app.baidu.com/static/cms/getapikey.html' target='_blank'>"+lang.applyFor+"</a></p><p class='errorMsg'>"+lang.tip2+"</p>" ;
         }
 
-    </script>
+
+</script>
 </body>
 </html>

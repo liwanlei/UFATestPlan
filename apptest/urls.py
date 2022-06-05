@@ -12,11 +12,22 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from app.views import *
-from django.contrib import admin
-from django.conf.urls import url, include
-from django.contrib.auth.decorators import login_required
+import threading
 
+from app.views import *
+from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
+from common.taskupdate import RedisTaskOpear
+
+t = threading.Thread(
+    target=RedisTaskOpear)  # 一般把此代码放在 apps.py ready方法中 在django启动时自动启动 也可以放在 url 等其他地方，这样无论uwsgi开启多少个进程，都会有订阅者
+t.daemon = True  # 设置为守护线程 因为django 在启动时会执行检查代码和启动程序，当主进程杀死时,该线程结束
+t.start()
+
+try:
+    scheduler.start()
+except Exception as e:
+    scheduler.shutdown()
 urlpatterns = [
     url(r'^timk_opear/', RunTimeTask.as_view(), name='timk_opear'),
     # url(r'admin/', (admin.site.urls)),
@@ -53,10 +64,10 @@ urlpatterns = [
     url(r'^huoxingneng/', login_required(Huoqufun.as_view()), name='huoxingneng'),
     url(r'^runprojecttest/', RunprojectTestCaseView.as_view(), name='runprojecttest'),
 
-    #pc端获取所有的测试任务
+    # pc端获取所有的测试任务
     url(r'^alltask/', GetRunTaskAll.as_view(), name='alltask'),
 
-    #pc端获取单个任务的详细信息
+    # pc端获取单个任务的详细信息
     url(r'^taskdetail/', GetTaskDetailView.as_view(), name='taskdetail'),
 
 ]
